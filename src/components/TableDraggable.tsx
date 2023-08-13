@@ -2,13 +2,16 @@ import { UniqueIdentifier, useDraggable } from '@dnd-kit/core';
 import Image from 'next/image';
 import React, { CSSProperties, ReactElement, useEffect, useState } from 'react';
 import { DraggableItem } from '~/types/draggableItem';
+import TableImage from '~/images/Table.svg'
 
-interface Props extends DraggableItem {};
 
-export function Draggable(props: Props): ReactElement {
+interface Props extends DraggableItem { };
+
+export function TableDraggable(props: Props): ReactElement {
+  const data = { imageSrc: TableImage, imageAlt: "A Picture of a table." };
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: props.id,
-    data: props.data
+    data: data
   });
 
   const style = transform ? {
@@ -17,7 +20,7 @@ export function Draggable(props: Props): ReactElement {
 
   return (
     <div ref={setNodeRef} style={style} {...listeners} {...attributes} className={`bg-slate-200 rounded-sm border-t-neutral-300 border h-6 w-6 text-center`}>
-      <Image priority src={props.data?.imageSrc} alt={props.data?.imageAlt}/>
+      <Image priority src={data.imageSrc} alt={data.imageAlt} />
     </div>
   );
 }

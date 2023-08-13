@@ -1,16 +1,15 @@
-import { UniqueIdentifier, DndContext, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 import Head from "next/head";
 import { useState } from "react";
-import { Draggable } from "~/components/Draggable";
-import { Droppable } from "~/components/Droppable";
-import { DraggableItem } from "~/types/draggableItem";
-import TableImage from '~/images/Table.svg'
 import { v4 as uuidv4 } from 'uuid';
+import { Droppable } from "~/components/Droppable";
+import { TableDraggable } from "~/components/TableDraggable";
+import { DraggableItem } from "~/types/draggableItem";
 
 
 export default function CreatePlan() {
     const containers = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'Q', 'R', 'T', 'Y', 'I', 'O', 'P'];
-    const DRAGGABLESDATAS = [{ imageSrc: TableImage, imageAlt: "A Picture of a table." }];
+    const draggables = [TableDraggable];
     const [draggablesInContainers, setDraggablesInContainers] = useState<Map<UniqueIdentifier, DraggableItem>>(new Map()
         // 'EF': {2f5062bc-a0f6-4954-b66b-d5337fb3e2b1, {'./icons/Table.svg', "A Picture of a table."}},
         // 'AB': {1f5064ab-a0f6-5456-b66b-d5337fb3e2b1, {'./icons/Chair.svg', "A Picture of a chair."}}
@@ -30,7 +29,7 @@ export default function CreatePlan() {
                 <input type="text" placeholder="Restaurant title" className="h-12 p-2 rounded-sm" />
             </main>
             <DndContext onDragEnd={handleDragEnd}>
-                <div className='p-2'>{DRAGGABLESDATAS.map((draggableData) => <Draggable data={draggableData} id={uuidv4()}></Draggable>)}</div>
+                <div className='p-2'>{draggables.map((Draggable) => <Draggable id={uuidv4()}></Draggable>)}</div>
                 <div className='flex'>
                     {containers.map((firstKeySet) => (
                         <div key={firstKeySet} className='flex flex-col'>
@@ -48,7 +47,7 @@ export default function CreatePlan() {
     );
     function getDraggableOnDroppable(droppableKey: string) {
         const currentDraggable = draggablesInContainers.get(droppableKey);
-        return currentDraggable ? <Draggable data={currentDraggable.data} id={currentDraggable.id} /> : null;
+        return currentDraggable ? <TableDraggable id={currentDraggable.id} /> : null;
     }
 
     function handleDragEnd(event: DragEndEvent) {
@@ -65,7 +64,7 @@ export default function CreatePlan() {
         const draggableId = active?.id ? active.id as string : null; // '2f5062bc-a0f6-4954-b66b-d5337fb3e2b1'
         if (containerId && draggableId) {
             if (!getDraggableOnDroppable(containerId)) { // 'EF': {2f5062bc-a0f6-4954-b66b-d5337fb3e2b1, 1}
-                setDraggablesInContainers(new Map(draggablesInContainers?.set(containerId, { id: draggableId, data: draggableData!})));  // 'EF': {2f5062bc-a0f6-4954-b66b-d5337fb3e2b1, 1}
+                setDraggablesInContainers(new Map(draggablesInContainers?.set(containerId, { id: draggableId})));  // 'EF': {2f5062bc-a0f6-4954-b66b-d5337fb3e2b1, 1}
                 // here we should also delete the draggable from the previous position
                 const previousDroppable = uniqueDraggables.get(draggableId);
                 if (previousDroppable) {
