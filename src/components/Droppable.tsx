@@ -7,7 +7,7 @@ export function Droppable({id, children}: {id: string, children: ReactElement | 
   });
   
   return (
-    <div ref={setNodeRef} className={`${isOver ? 'bg-green-400' : undefined} h-12 w-12 p-2 border border-slate-400 flex flex-col justify-center items-center`}>
+    <div key={id} ref={setNodeRef} className={`${id} ${isOver ? 'bg-green-400' : ""} h-12 w-12 p-2 border border-slate-400 flex flex-col justify-center items-center`}>
       {children}
     </div>
   );

@@ -1,3 +1,3 @@
 export interface DraggableItem {
-    id: string
+    id: string 
 }
