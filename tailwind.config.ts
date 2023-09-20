@@ -7,6 +7,9 @@ export default {
       colors: {
         'header-green': '#A2D29E',
         'button-green': '#2B762A'
+      },
+      backgroundImage: {
+        'leaves-tables': "url('../images/wooden-tables-leaves.jpg')"
       }
     },
   },
