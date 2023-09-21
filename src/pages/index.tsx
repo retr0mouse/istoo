@@ -1,12 +1,10 @@
+import { Koulen, Lato } from 'next/font/google';
 import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
-import { Koulen, Lato } from 'next/font/google'
-import TablesImage from '../images/wooden-tables-leaves.jpg';
-import WomanPhoneImage from '../images/woman-phone.jpg';
+import Image from "next/image";
 import ReservedImage from '../images/reserved-table.jpg';
 import WoodenTables from '../images/tables.jpg';
-import Image from "next/image";
+import WomanPhoneImage from '../images/woman-phone.jpg';
+import TablesImage from '../images/wooden-tables-leaves.jpg';
 
 const koulen = Koulen({
   subsets: ['latin'],
@@ -20,6 +18,7 @@ const latoFont = Lato({
 
 
 export default function Home() {
+
   return (
     <>
       <Head>
