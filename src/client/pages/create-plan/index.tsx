@@ -2,9 +2,9 @@ import { DndContext, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { Droppable } from "~/components/Droppable";
-import { TableDraggable } from "~/components/TableDraggable";
-import { DraggableItem } from "~/types/draggableItem";
+import { Droppable } from "../../components/Droppable";
+import { TableDraggable } from "../../components/TableDraggable";
+import { DraggableItem } from "../../../types/draggableItem";
 
 
 export default function CreatePlan() {
