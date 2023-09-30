@@ -1,7 +1,6 @@
-import { QueryResult } from 'pg'
 import pkg from 'pg';
-const { Client } = pkg;
-const client = new Client({
+const { Pool } = pkg;
+const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'postgres',
@@ -9,13 +8,16 @@ const client = new Client({
     port: 5432,
 })
 
-export const query = async (text: string, params?: any): Promise<QueryResult<any>> => {
-    client.query(text, (error, results) => {
-        if (error) {
-            console.log("oshibka");
-            throw error;
-        }
-        return results;
-    });
-    return {} as QueryResult<any>;
+export const query = async (text: string, params?: any) => {
+    pool.on('error', (err, client) => {
+        console.error('Unexpected error on idle client', err);
+        process.exit(-1);
+    })
+
+    const client = await pool.connect();
+    const res = await client.query(text, params);
+    console.log(res.rows);
+
+    client.release();
+    return res;
 }

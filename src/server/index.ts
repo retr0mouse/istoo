@@ -20,6 +20,7 @@ app.get('/', (request, response) => {
 
 app.get('/users', async (request, response) => {
   const users = await getAllUsers();
+  
   // const users = "";
   response.json({ users: users ? users : 'not found' });
 });
