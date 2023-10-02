@@ -16,7 +16,6 @@ export const query = async (text: string, params?: any) => {
 
     const client = await pool.connect();
     const res = await client.query(text, params);
-    console.log(res.rows);
 
     client.release();
     return res;

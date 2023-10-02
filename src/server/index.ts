@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
-import { getAllUsers } from './db/queries.js'
+import { addUser, getAllUsers } from './db/queries.js'
 
 
 const app = express();
@@ -11,7 +11,7 @@ app.use(
   bodyParser.urlencoded({
     extended: true,
   })
-  
+
 );
 
 app.get('/', (request, response) => {
@@ -19,11 +19,28 @@ app.get('/', (request, response) => {
 });
 
 app.get('/users', async (request, response) => {
-  const users = await getAllUsers();
-  
-  // const users = "";
-  response.json({ users: users ? users : 'not found' });
+  const result = await getAllUsers();
+  if (result.success) {
+    response.status(200);
+    response.json({data: result.data});
+    return;
+  }
+  response.status(500);
+  response.json({ error: result.error});
 });
+
+app.post('/users', async (request, response) => {
+  if (request) {
+    const result = await addUser(request.body);
+    if (result.success) {
+      response.status(200);
+      response.json();
+      return;
+    }
+    response.status(500);
+    response.json({error: result.error});
+  }
+})
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
