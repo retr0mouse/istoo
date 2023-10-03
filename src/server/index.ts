@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
-import { addUser, getAllUsers } from './db/queries.js'
+import { addUser, getAllUsers, getUserByName } from './db/queries.js'
 
 
 const app = express();
@@ -14,10 +14,19 @@ app.use(
 
 );
 
-app.get('/', (request, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' });
+// GET user by name
+app.get('/users/:username', async (request, response) => {
+  const result = await getUserByName(request.params.username);
+  if (result.success) {
+    response.status(200);
+    response.json({data: result.data});
+    return;
+  }
+  response.status(500);
+  response.json({ error: result.error});
 });
 
+// GET all users
 app.get('/users', async (request, response) => {
   const result = await getAllUsers();
   if (result.success) {
@@ -29,6 +38,7 @@ app.get('/users', async (request, response) => {
   response.json({ error: result.error});
 });
 
+// POST new user
 app.post('/users', async (request, response) => {
   if (request) {
     const result = await addUser(request.body);
