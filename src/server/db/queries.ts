@@ -9,18 +9,12 @@ interface DbResult {
 }
 
 export async function getAllUsers(): Promise<DbResult> {
-    return ({success: true, data: (await query('SELECT * FROM accounts;')).rows})
+    return ({ success: true, data: (await query('SELECT * FROM accounts;')).rows })
 };
 
 export async function getUserByName(username: string): Promise<DbResult> {
-    const stringUsername = String(username);
-    if (!stringUsername || stringUsername.length == 0) {
-        const err = new Error("The username is invalid");
-        console.error(err);
-        return({success: false, error: err});
-    }
     const queryText = `SELECT * FROM accounts WHERE username = $1;`;
-    return ({success: true, data: (await query(queryText, [stringUsername])).rows})
+    return ({ success: true, data: (await query(queryText, username)).rows })
 };
 
 
@@ -28,16 +22,8 @@ export async function addUser(request: { username: string, password: string, ema
     const { username, password, email, createdOn, lastLogin } = request;
 
     try {
-        // Stringify the password
-        const stringPassword = String(password);
-        if (!stringPassword || stringPassword.length == 0) {
-            const err = new Error("The password is invalid");
-            console.error(err);
-            return({success: false, error: err});
-        }
-
         // Hash the password asynchronously
-        const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Use parameterized query to safely insert data into the database
         const queryText = `
@@ -53,4 +39,10 @@ export async function addUser(request: { username: string, password: string, ema
         console.error('Error adding user:', err);
         return { success: false, error: err };
     }
+}
+
+export async function deleteUser(userId: number): Promise<DbResult> {
+    const queryText = `DELETE FROM accounts WHERE user_id = $1;`;
+    await query(queryText, [userId]);
+    return { success: true };
 }
