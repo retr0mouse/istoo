@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import { addUser, deleteUser, getAllUsers, getUserByName } from './db/queries.js'
-
+import { registerUser } from './auth/registration.js';
 
 const app = express();
 const port = 1234;
@@ -58,6 +58,17 @@ app.post('/users', async (request, response) => {
   }
   request.body.password = parsedPassword;
   const result = await addUser(request.body);
+  if (result.success) {
+    response.status(200);
+    response.json();
+    return;
+  }
+  response.status(500);
+  response.json({ error: result.error?.message });
+})
+
+app.post('/register', async (request, response) => {
+  const result = await registerUser(request.body);
   if (result.success) {
     response.status(200);
     response.json();

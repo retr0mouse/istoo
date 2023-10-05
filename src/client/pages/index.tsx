@@ -65,6 +65,6 @@ export default function Home() {
 
   async function getResponse() {
     const res = (await fetch('/api/init-db')).json();
-    console.log(res); 
+      // console.log(res); 
   }
 }
