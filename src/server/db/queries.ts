@@ -5,17 +5,33 @@ import bcrypt from "bcrypt";
 const saltRounds = 10;
 
 export async function getAllUsersDB(): Promise<ApiResult> {
-    return ({ success: true, data: (await query('SELECT * FROM accounts;')).rows })
+    try {
+        return ({ success: true, data: (await query('SELECT * FROM accounts;')).rows })
+    } catch (err: any) {
+        console.error('Error deleting user:', err);
+        return { success: false, error: err };
+    }
 };
 
 export async function getUserByNameDB(username: string): Promise<ApiResult> {
-    const queryText = `SELECT * FROM accounts WHERE username = $1;`;
-    return ({ success: true, data: (await query(queryText, [username])).rows })
+    try {
+        const queryText = `SELECT * FROM accounts WHERE username = $1;`;
+        return ({ success: true, data: (await query(queryText, [username])).rows })
+    } catch (err: any) {
+        console.error('Error deleting user:', err);
+        return { success: false, error: err };
+    }
 };
 
 export async function getUserByEmailDB(email: string): Promise<ApiResult> {
-    const queryText = `SELECT * FROM accounts WHERE email = $1;`;
-    return ({ success: true, data: (await query(queryText, [email])).rows })
+    try {
+        const queryText = `SELECT * FROM accounts WHERE email = $1;`;
+        return ({ success: true, data: (await query(queryText, [email])).rows })
+    } catch (err: any) {
+        console.error('Error deleting user:', err);
+        return { success: false, error: err };
+    }
+
 };
 
 export async function addUserDB(request: { username: string, password: string, email: string }): Promise<ApiResult> {
