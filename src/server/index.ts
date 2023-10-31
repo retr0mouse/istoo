@@ -1,7 +1,8 @@
 import bodyParser from 'body-parser'
 import express from 'express'
-import { addUser, deleteUser, getAllUsers, getUserByName } from './db/queries.js'
-import { registerUser } from './auth/registration.js';
+import { addUserDB, deleteUserByIdDB, getAllUsersDB, getUserByNameDB } from './db/queries.js'
+import { registerUser } from './api/account/registration.js';
+import { deleteUser } from './api/account/modify.js';
 
 const app = express();
 const port = 1234;
@@ -24,7 +25,7 @@ app.get('/users/:username', async (request, response) => {
     response.json({ error: err.message });
     return;
   }
-  const result = await getUserByName(parsedUsername);
+  const result = await getUserByNameDB(parsedUsername);
   if (result.success) {
     response.status(200);
     response.json({ data: result.data });
@@ -36,7 +37,7 @@ app.get('/users/:username', async (request, response) => {
 
 // GET all users
 app.get('/users', async (request, response) => {
-  const result = await getAllUsers();
+  const result = await getAllUsersDB();
   if (result.success) {
     response.status(200);
     response.json({ data: result.data });
@@ -57,7 +58,7 @@ app.post('/users', async (request, response) => {
     return;
   }
   request.body.password = parsedPassword;
-  const result = await addUser(request.body);
+  const result = await addUserDB(request.body);
   if (result.success) {
     response.status(200);
     response.json();
@@ -65,7 +66,7 @@ app.post('/users', async (request, response) => {
   }
   response.status(500);
   response.json({ error: result.error?.message });
-})
+});
 
 app.post('/register', async (request, response) => {
   const result = await registerUser(request.body);
@@ -76,19 +77,19 @@ app.post('/register', async (request, response) => {
   }
   response.status(500);
   response.json({ error: result.error?.message });
-})
+});
 
 // DELETE user by id
-app.delete('/users/:userId', async (request, response) => {
-  const parsedUserId = Number(request.params.userId);
-  if (!parsedUserId) {
-    const err = new Error("The userId is invalid");
+app.delete('/users/:userEmail', async (request, response) => {
+  const parsedUserEmail = String(request.params.userEmail);
+  if (!parsedUserEmail) {
+    const err = new Error("The email is invalid");
     // console.error(err);
     response.status(400);
     response.json({ error: err.message });
     return;
   }
-  const result = await deleteUser(parsedUserId);
+  const result = await deleteUser(parsedUserEmail);
   if (result.success) {
     response.status(200);
     response.json();
@@ -96,7 +97,7 @@ app.delete('/users/:userId', async (request, response) => {
   }
   response.status(500);
   response.json({ error: result.error?.message });
-})
+});
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);

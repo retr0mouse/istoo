@@ -4,21 +4,21 @@ import { query } from "./index.js";
 import bcrypt from "bcrypt";
 const saltRounds = 10;
 
-export async function getAllUsers(): Promise<ApiResult> {
+export async function getAllUsersDB(): Promise<ApiResult> {
     return ({ success: true, data: (await query('SELECT * FROM accounts;')).rows })
 };
 
-export async function getUserByName(username: string): Promise<ApiResult> {
+export async function getUserByNameDB(username: string): Promise<ApiResult> {
     const queryText = `SELECT * FROM accounts WHERE username = $1;`;
     return ({ success: true, data: (await query(queryText, [username])).rows })
 };
 
-export async function getUserByEmail(email: string): Promise<ApiResult> {
+export async function getUserByEmailDB(email: string): Promise<ApiResult> {
     const queryText = `SELECT * FROM accounts WHERE email = $1;`;
     return ({ success: true, data: (await query(queryText, [email])).rows })
 };
 
-export async function addUser(request: { username: string, password: string, email: string }): Promise<ApiResult> {
+export async function addUserDB(request: { username: string, password: string, email: string }): Promise<ApiResult> {
     const { username, password, email } = request;
 
     try {
@@ -43,8 +43,24 @@ export async function addUser(request: { username: string, password: string, ema
     }
 }
 
-export async function deleteUser(userId: number): Promise<ApiResult> {
-    const queryText = `DELETE FROM accounts WHERE user_id = $1;`;
-    await query(queryText, [userId]);
-    return { success: true };
+export async function deleteUserByIdDB(userId: number): Promise<ApiResult> {
+    try {
+        const queryText = `DELETE FROM accounts WHERE user_id = $1;`;
+        await query(queryText, [userId]);
+        return { success: true };
+    } catch (err: any) {
+        console.error('Error deleting user:', err);
+        return { success: false, error: err };
+    }
+}
+
+export async function deleteUserByEmailDB(email: string): Promise<ApiResult> {
+    try {
+        const queryText = `DELETE FROM accounts WHERE email = $1;`;
+        await query(queryText, [email]);
+        return { success: true };
+    } catch (err: any) {
+        console.error('Error deleting user:', err);
+        return { success: false, error: err };
+    }
 }

@@ -1,5 +1,5 @@
-import { ApiResult } from "../../types/apiResult";
-import { addUser, getUserByEmail } from "../db/queries.js";
+import { ApiResult } from "../../../types/apiResult";
+import { addUserDB, getUserByEmailDB } from "../../db/queries.js";
 
 export async function registerUser(credentials: { username: string, email: string, password: string }): Promise<ApiResult> {
     const { username, email, password } = credentials;
@@ -15,8 +15,8 @@ export async function registerUser(credentials: { username: string, email: strin
         return { success: false, error: err };
     }
     
-    const foundUser = await getUserByEmail(stringEmail);
-    
+    const foundUser = await getUserByEmailDB(stringEmail);
+
     if (foundUser.data.length != 0) {
         const err = new Error("User with the same email already exists");
         console.error(err.message);
@@ -24,7 +24,7 @@ export async function registerUser(credentials: { username: string, email: strin
     }
     
     // Pass the string values to addUser function
-    return await addUser({
+    return await addUserDB({
         username: stringUsername,
         email: stringEmail,
         password: stringPassword
