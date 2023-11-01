@@ -4,7 +4,7 @@ import { addUserDB, getUserByEmailDB } from "../../db/queries.js";
 export async function registerUser(credentials: { username: string, email: string, password: string }): Promise<ApiResult> {
     const { username, email, password } = credentials;
 
-    // Ensure that username, email, and password are strings
+    // Ensure that username, email, and password are proper strings
     const stringUsername = String(username);
     const stringEmail = String(email);
     const stringPassword = String(password);

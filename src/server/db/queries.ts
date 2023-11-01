@@ -16,7 +16,7 @@ export async function getAllUsersDB(): Promise<ApiResult> {
 export async function getUserByNameDB(username: string): Promise<ApiResult> {
     try {
         const queryText = `SELECT * FROM accounts WHERE username = $1;`;
-        return ({ success: true, data: (await query(queryText, [username])).rows })
+        return ({ success: true, data: (await query(queryText, [username])).rows[0] })
     } catch (err: any) {
         console.error('Error deleting user:', err);
         return { success: false, error: err };
@@ -78,5 +78,16 @@ export async function deleteUserByEmailDB(email: string): Promise<ApiResult> {
     } catch (err: any) {
         console.error('Error deleting user:', err);
         return { success: false, error: err };
+    }
+}
+
+export async function getHashedPasswordDB(username: string): Promise<ApiResult> {
+    try {
+        const queryText = `SELECT (password) FROM accounts WHERE username = $1;`;
+        await (query(queryText, [username]));
+        return { success: true };
+    } catch (err: any) {
+        console.error('Error getting hasned password: ', err);
+        return { success: false, error: err }
     }
 }

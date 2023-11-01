@@ -1,8 +1,9 @@
-import bodyParser from 'body-parser'
-import express from 'express'
-import { addUserDB, deleteUserByIdDB, getAllUsersDB, getUserByNameDB } from './db/queries.js'
-import { registerUser } from './api/account/registration.js';
-import { deleteUser } from './api/account/modify.js';
+import bodyParser from 'body-parser';
+import express from 'express';
+import { addUserDB, getAllUsersDB, getUserByNameDB } from '../db/queries.js'; 
+import { deleteUser } from '../middleware/account/modify.js';
+import { registerUser } from '../middleware/account/registration.js';
+import { loginUser } from '../middleware/account/login.js';
 
 const app = express();
 const port = 1234;
@@ -26,7 +27,7 @@ app.get('/users/:username', async (request, response) => {
     return;
   }
   const result = await getUserByNameDB(parsedUsername);
-  if (result.success) {
+  if (result.success) { // TODO: this will be true even if user was not found
     response.status(200);
     response.json({ data: result.data });
     return;
@@ -68,11 +69,24 @@ app.post('/users', async (request, response) => {
   response.json({ error: result.error?.message });
 });
 
+// Register a new account 
 app.post('/register', async (request, response) => {
   const result = await registerUser(request.body);
   if (result.success) {
     response.status(200);
     response.json();
+    return;
+  }
+  response.status(500);
+  response.json({ error: result.error?.message });
+});
+
+// Login an existing user
+app.post('/login', async (request, response) => {
+  const result = await loginUser(request.body.login, request.body.password);
+  if (result.success) {
+    response.status(200);
+    response.json({token: result.data});
     return;
   }
   response.status(500);
