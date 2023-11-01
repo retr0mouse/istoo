@@ -1,7 +1,7 @@
 import { ApiResult } from "../../../types/apiResult";
 import bcrypt from "bcrypt";
 import { getHashedPasswordDB, getUserByNameDB } from "../../db/queries.js";
-import 'dotenv/config';
+import 'dotenv';
 import jwt from "jsonwebtoken";
 
 export async function loginUser(username: string, inputPassword: string): Promise<ApiResult> {

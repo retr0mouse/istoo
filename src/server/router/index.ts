@@ -4,6 +4,7 @@ import { addUserDB, getAllUsersDB, getUserByNameDB } from '../db/queries.js';
 import { deleteUser } from '../middleware/account/modify.js';
 import { registerUser } from '../middleware/account/registration.js';
 import { loginUser } from '../middleware/account/login.js';
+import { authenticate } from '../middleware/auth.js';
 
 const app = express();
 const port = 1234;
@@ -92,6 +93,10 @@ app.post('/login', async (request, response) => {
   response.status(500);
   response.json({ error: result.error?.message });
 });
+
+app.post('/auth', authenticate, (request, response) => {
+  response.status(200).send("Hi");
+})
 
 // DELETE user by id
 app.delete('/users/:userEmail', async (request, response) => {
