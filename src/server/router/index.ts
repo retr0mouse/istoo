@@ -1,9 +1,10 @@
 import bodyParser from 'body-parser';
-import express from 'express';
-import { addUserDB, getAllUsersDB, getUserByNameDB } from '../db/queries.js'; 
+import express, { NextFunction, Response } from 'express';
+import { AuthRequest } from '../../types/authTypes.js';
+import { addUserDB, getAllUsersDB, getUserByNameDB } from '../db/queries.js';
+import { loginUser } from '../middleware/account/login.js';
 import { deleteUser } from '../middleware/account/modify.js';
 import { registerUser } from '../middleware/account/registration.js';
-import { loginUser } from '../middleware/account/login.js';
 import { authenticate } from '../middleware/auth.js';
 
 const app = express();
@@ -94,9 +95,21 @@ app.post('/login', async (request, response) => {
   response.json({ error: result.error?.message });
 });
 
-app.post('/auth', authenticate, (request, response) => {
-  response.status(200).send("Hi");
-})
+interface User {
+  id: string;
+  username: string;
+}
+
+app.post('/auth', authenticate, (req, res, next) => {
+  // Access user info from req.user
+  const userInfo = (req as any).user as User;
+
+  if (userInfo) {
+    res.status(200).json({ user: userInfo }); // Return user info as JSON
+  } else {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+});
 
 // DELETE user by id
 app.delete('/users/:userEmail', async (request, response) => {
