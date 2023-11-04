@@ -1,12 +1,10 @@
+import { Koulen, Lato } from 'next/font/google';
 import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
-import { Koulen, Lato } from 'next/font/google'
-import TablesImage from '../images/wooden-tables-leaves.jpg';
-import WomanPhoneImage from '../images/woman-phone.jpg';
-import ReservedImage from '../images/reserved-table.jpg';
-import WoodenTables from '../images/tables.jpg';
 import Image from "next/image";
+import ReservedImage from '../../images/reserved-table.jpg';
+import WoodenTables from '../../images/tables.jpg';
+import WomanPhoneImage from '../../images/woman-phone.jpg';
+import TablesImage from '../../images/wooden-tables-leaves.jpg';
 
 const koulen = Koulen({
   subsets: ['latin'],
@@ -20,6 +18,7 @@ const latoFont = Lato({
 
 
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -36,7 +35,7 @@ export default function Home() {
         <div className={'flex w-full lg:w-1/2 h-full flex-col justify-center p-24 text-start'}>
           <h1 className={`${latoFont.className} text-6xl font-bold`}>Book a table easily</h1>
           <h2 className={`${latoFont.className} text-2xl my-8`}>Say goodbye to waiting times with our restaurant seating app. Reserve your spot hassle-free.</h2>
-          <button className={`bg-button-green w-36 py-3 rounded-md`}><span className={`${latoFont.className} font-bold text-white text-2xl`}>Explore</span></button>
+          <button onClick={() => getResponse()}className={`bg-button-green w-36 py-3 rounded-md`}><span className={`${latoFont.className} font-bold text-white text-2xl`}>Explore</span></button>
         </div>
       </main>
       <div className="py-10 flex flex-col justify-center items-center w-full bg-gradient-to-r from-green-900 to-gray-600">
@@ -63,4 +62,9 @@ export default function Home() {
       </div>
     </>
   );
+
+  async function getResponse() {
+    const res = (await fetch('/api/init-db')).json();
+      // console.log(res); 
+  }
 }
