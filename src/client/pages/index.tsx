@@ -1,24 +1,14 @@
-import { Koulen, Lato } from 'next/font/google';
 import Head from "next/head";
 import Image from "next/image";
+import Link from 'next/link';
 import ReservedImage from '../../images/reserved-table.jpg';
 import WoodenTables from '../../images/tables.jpg';
 import WomanPhoneImage from '../../images/woman-phone.jpg';
 import TablesImage from '../../images/wooden-tables-leaves.jpg';
-
-const koulen = Koulen({
-  subsets: ['latin'],
-  weight: "400"
-});
-
-const latoFont = Lato({
-  subsets: ['latin'],
-  weight: "400"
-})
-
+import { koulen } from '../fonts/koulen';
+import { lato } from '../fonts/lato';
 
 export default function Home() {
-
   return (
     <>
       <Head>
@@ -33,38 +23,33 @@ export default function Home() {
       <main className="flex justify-between max-h-screen  bg-slate-100 mt-0">
         <Image className={'hidden lg:block w-1/2 object-cover'} src={TablesImage} alt={"Picture of wooden tables and green leaves hanging from a ceiling"}></Image>
         <div className={'flex w-full lg:w-1/2 h-full flex-col justify-center p-24 text-start'}>
-          <h1 className={`${latoFont.className} text-6xl font-bold`}>Book a table easily</h1>
-          <h2 className={`${latoFont.className} text-2xl my-8`}>Say goodbye to waiting times with our restaurant seating app. Reserve your spot hassle-free.</h2>
-          <button onClick={() => getResponse()}className={`bg-button-green w-36 py-3 rounded-md`}><span className={`${latoFont.className} font-bold text-white text-2xl`}>Explore</span></button>
+          <h1 className={`${lato.className} text-6xl font-bold`}>Book a table easily</h1>
+          <h2 className={`${lato.className} text-2xl my-8`}>Say goodbye to waiting times with our restaurant seating app. Reserve your spot hassle-free.</h2>
+          <Link href="/home"><button className={`bg-button-green w-36 py-3 rounded-md`}><span className={`${lato.className} font-bold text-white text-2xl`}>Explore</span></button></Link> 
         </div>
       </main>
       <div className="py-10 flex flex-col justify-center items-center w-full bg-gradient-to-r from-green-900 to-gray-600">
         <div className="w-4/5">
-          <h1 className={`${latoFont.className} text-stone-200 text-center lg:text-start text-5xl font-medium`}>Our Features</h1>
+          <h1 className={`${lato.className} text-stone-200 text-center lg:text-start text-5xl font-medium`}>Our Features</h1>
           <div className="flex flex-col lg:flex-row py-12 space-x-2 justify-between">
             <div className="lg:block flex flex-col self-center w-full lg:w-1/3 h-full my-4">
               <Image className={'w-full h-72 object-cover rounded-sm self-center'} src={WomanPhoneImage} alt="Picture of a woman looking at her phone" />
               <h1 className={`${koulen.className} text-stone-200 text-4xl font-medium my-2`}>Table reservation</h1>
-              <p className={`${latoFont.className} text-slate-200 text-2xl font-medium`}>Effortlessly book a table for any occasion in just a few clicks. </p>
+              <p className={`${lato.className} text-slate-200 text-2xl font-medium`}>Effortlessly book a table for any occasion in just a few clicks. </p>
             </div>
             <div className="lg:block flex flex-col self-center w-full lg:w-1/3 h-full my-4">
               <Image className={'w-full h-72 object-cover rounded-sm self-center'} src={WoodenTables} alt="A picture of a wooden tables" />
               <h1 className={`${koulen.className} text-stone-200 text-4xl font-medium my-2`}>Waitlist Management</h1>
-              <p className={`${latoFont.className} text-slate-200 text-2xl font-medium`}>Manage waitlists dynamically and optimize customer seating experience.</p>
+              <p className={`${lato.className} text-slate-200 text-2xl font-medium`}>Manage waitlists dynamically and optimize customer seating experience.</p>
             </div>
             <div className="lg:block flex flex-col self-center w-full lg:w-1/3 h-full my-4">
               <Image className={'w-full h-72 object-cover rounded-sm self-center'} src={ReservedImage} alt="A picture of a reserved table" />
               <h1 className={`${koulen.className} text-stone-200 text-4xl font-medium my-2`}>Real-Time Availability</h1>
-              <p className={`${latoFont.className} text-slate-200 text-2xl font-medium`}>Check live availability and secure your preferred spot instantly. </p>
+              <p className={`${lato.className} text-slate-200 text-2xl font-medium`}>Check live availability and secure your preferred spot instantly. </p>
             </div>
           </div>
         </div>
       </div>
     </>
   );
-
-  async function getResponse() {
-    const res = (await fetch('/api/init-db')).json();
-      // console.log(res); 
-  }
 }
