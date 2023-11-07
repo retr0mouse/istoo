@@ -10,6 +10,11 @@ export default {
       },
       backgroundImage: {
         'leaves-tables': "url('../images/wooden-tables-leaves.jpg')"
+      },
+      fontFamily: {
+        "sans": 'var(--font-alegreya)',
+        "mono": 'var(--font-lato)',
+        logo: 'var(--font-koulen'
       }
     },
   },
