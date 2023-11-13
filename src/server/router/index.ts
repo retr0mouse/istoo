@@ -1,6 +1,5 @@
 import bodyParser from 'body-parser';
-import express, { NextFunction, Response } from 'express';
-import { AuthRequest } from '../../types/authTypes.js';
+import express from 'express';
 import { addUserDB, getAllUsersDB, getUserByNameDB } from '../db/queries.js';
 import { loginUser } from '../middleware/account/login.js';
 import { deleteUser } from '../middleware/account/modify.js';
