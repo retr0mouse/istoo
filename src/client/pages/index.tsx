@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Head>
         <title>Istoo</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="favicon.ico" sizes="any" />
       </Head>
       <header className="bg-header-green flex items-start w-full h-12 p-2">
         <h1 className={`font-logo self-center uppercase text-sm font-extrabold tracking-tight text-slate-800 sm:text-2xl`}>

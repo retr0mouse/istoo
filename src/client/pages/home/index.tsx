@@ -1,9 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
 import { ReactElement, useState } from "react";
-import LocationPinImage from "../../../images/location-pin.svg";
 import CitiesCombobox from "../../components/CitiesCombobox";
-import LoginDialog from "../../components/LoginDialog";
+import { LoginDialog } from "../../components/loginDialog";
 
 export default function Home(): ReactElement {
     const [city, setCity] = useState("Tallinn");
@@ -12,7 +9,7 @@ export default function Home(): ReactElement {
     return (
         <>
             <header className="bg-header-green flex justify-between w-full h-12 p-2 items-center gap-12">
-                <div className="flex gap-6 w-2/3 justify-between">
+                <div className="flex gap-6 md:w-2/3 justify-between">
                     <h1 className={`font-sans self-center uppercase text-sm font-extrabold tracking-tight text-slate-800 sm:text-2xl`}>
                         istoo.
                     </h1>

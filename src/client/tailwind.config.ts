@@ -1,7 +1,10 @@
 import { type Config } from "tailwindcss";
 
 export default {
-  content: ["./pages/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./pages/**/*.{tsx,ts,jsx,jsx}",
+    "./components/**/*.{tsx,ts,jsx,jsx}"
+  ],
   theme: {
     extend: {
       colors: {
@@ -14,7 +17,7 @@ export default {
       fontFamily: {
         "sans": 'var(--font-alegreya)',
         "mono": 'var(--font-lato)',
-        logo: 'var(--font-koulen'
+        "logo": 'var(--font-koulen)'
       }
     },
   },
