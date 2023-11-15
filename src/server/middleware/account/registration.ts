@@ -1,4 +1,4 @@
-import { ApiResult } from "../../../types/apiResult";
+import { ApiResult } from "../../types/apiResult";
 import { addUserDB, getUserByEmailDB } from "../../db/queries.js";
 
 export async function registerUser(credentials: { username: string, email: string, password: string }): Promise<ApiResult> {

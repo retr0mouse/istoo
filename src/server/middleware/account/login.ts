@@ -1,4 +1,4 @@
-import { ApiResult } from "../../../types/apiResult";
+import { ApiResult } from "../../types/apiResult";
 import bcrypt from "bcrypt";
 import { getHashedPasswordDB, getUserByNameDB } from "../../db/queries.js";
 import 'dotenv';

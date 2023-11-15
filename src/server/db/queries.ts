@@ -1,5 +1,5 @@
 import { getCurrentDate } from "../utils/date.js";
-import { ApiResult } from "../../types/apiResult.js";
+import { ApiResult } from "../types/apiResult.js";
 import { query } from "./index.js";
 import bcrypt from "bcrypt";
 const saltRounds = 10;
