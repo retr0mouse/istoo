@@ -1,6 +1,6 @@
-import { Fragment, useState } from 'react'
-import { Combobox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon, MapPinIcon } from '@heroicons/react/20/solid'
+import { Combobox, Transition } from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon, MapPinIcon } from '@heroicons/react/20/solid';
+import { Fragment, useState } from 'react';
 
 type City = {
   id: number,
@@ -31,17 +31,21 @@ export default function CitiesCombobox() {
 
   return (
     <Combobox value={selected} onChange={setSelected}>
-      <div className="relative h-10">
-        <div className="cursor-pointer flex h-full items-center relative w-full overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-          <MapPinIcon className="h-12 w-10 p-2" />
-          <Combobox.Input
-            className="h-[20px] outline-none ring-0 border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-1"
-            displayValue={(city: City) => city.title}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          <Combobox.Button className="flex items-center h-12 w-12">
+      <div className="relative h-12">
+        <div className="cursor-pointer flex h-full items-center relative w-full rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+          <MapPinIcon className="h-12 w-10 p-2 text-gray-600" />
+          <div className="flex flex-col font-mono pl-3 pr-10 text-sm leading-5 text-gray-900">
+            <Combobox.Label className="font-mono font-semibold text-button-green">City: </Combobox.Label>
+            <Combobox.Input
+              className="outline-none"
+              displayValue={(city: City) => city.title}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
+
+          <Combobox.Button className="flex items-center h-12 w-12 border-solid border-black">
             <ChevronUpDownIcon
-              className="h-12 w-12 p-2 text-gray-500"
+              className="h-10 w-10 p-2 text-gray-600 border-solid border-black"
             />
           </Combobox.Button>
         </div>
@@ -52,7 +56,7 @@ export default function CitiesCombobox() {
           leaveTo="opacity-0"
           afterLeave={() => setQuery('')}
         >
-          <Combobox.Options className="absolute max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+          <Combobox.Options className="font-mono absolute max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
             {filteredCities.length === 0 && query !== '' ? (
               <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                 Nothing found.

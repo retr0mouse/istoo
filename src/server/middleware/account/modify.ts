@@ -1,4 +1,4 @@
-import { ApiResult } from "../../../types/apiResult.js";
+import { ApiResult } from "../../types/apiResult.js";
 import { deleteUserByEmailDB, getUserByEmailDB } from "../../db/queries.js";
 
 export async function deleteUser(userEmail: string): Promise<ApiResult> {

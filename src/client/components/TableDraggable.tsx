@@ -2,7 +2,7 @@ import { DraggableAttributes, useDraggable } from '@dnd-kit/core';
 import Image from 'next/image';
 import { CSSProperties, ReactElement } from 'react';
 import TableImage from '~/images/Table.svg';
-import { DraggableItem } from '~/types/draggableItem';
+import { DraggableItem } from 'types/draggableItem';
 
 interface Props extends DraggableItem { }
 

@@ -1,7 +1,7 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
 
-export function LoginDialog() {
+export default function LoginDialog() {
     let [isOpen, setIsOpen] = useState(false);
 
     function closeDialog() {
@@ -18,9 +18,9 @@ export function LoginDialog() {
                 <button
                     type="button"
                     onClick={openDialog}
-                    className="font-sans h-10 w-24"
+                    className="h-10 w-24"
                 >
-                    Log In
+                    <span className="font-mono">Log In</span>
                 </button>
             </div>
 
@@ -51,17 +51,17 @@ export function LoginDialog() {
                             >
                                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-14 text-left align-middle shadow-xl transition-all">                                    
                                     <Dialog.Title
-                                        as="h3"
-                                        className="text-3xl font-logo font-bold text-gray-900"
+                                        as="p"
+                                        className="text-4xl font-mono font-normal text-gray-900"
                                     >
                                         Log in to Istoo
                                     </Dialog.Title>
                                     <div className="mt-2 flex flex-col w-full gap-2">
-                                        <input type="text" placeholder='Email or username' className={`p-2 font-mono w-full border`} />
-                                        <input type="text" placeholder='Password' className={`p-2 font-mono w-full border`} /> 
+                                        <input type="text" placeholder='Email or username' className={`p-2 font-sans w-full border`} />
+                                        <input type="text" placeholder='Password' className={`p-2 font-sans w-full border`} /> 
                                     </div>
                                     <div>
-                                        <input className="appearance-none checked:bg-button-green" type="radio" id="remember" />
+                                        <input className="checked:bg-button-green" type="radio" id="remember" />
                                         <label className="font-mono ml-4" htmlFor="remember">Remember me</label>
                                     </div>
                                     <button
