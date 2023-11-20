@@ -14,11 +14,11 @@ export default function LoginDialog() {
 
     return (
         <>
-            <div className="relative inset-0 flex items-center justify-center w-1/3 h-10">
+            <div className="relative inset-0 flex items-center justify-center w-1/2 h-10">
                 <button
                     type="button"
                     onClick={openDialog}
-                    className="h-10 w-24"
+                    className="h-10 w-full"
                 >
                     <span className="font-mono">Log In</span>
                 </button>
@@ -49,7 +49,7 @@ export default function LoginDialog() {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-14 text-left align-middle shadow-xl transition-all">                                    
+                                <Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-white p-14 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="p"
                                         className="text-4xl font-mono font-normal text-gray-900"
@@ -58,7 +58,7 @@ export default function LoginDialog() {
                                     </Dialog.Title>
                                     <div className="mt-2 flex flex-col w-full gap-2">
                                         <input type="text" placeholder='Email or username' className={`p-2 font-sans w-full border`} />
-                                        <input type="text" placeholder='Password' className={`p-2 font-sans w-full border`} /> 
+                                        <input type="text" placeholder='Password' className={`p-2 font-sans w-full border`} />
                                     </div>
                                     <div>
                                         <input className="checked:bg-button-green" type="radio" id="remember" />
