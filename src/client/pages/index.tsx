@@ -5,6 +5,7 @@ import ReservedImage from '../../images/reserved-table.jpg';
 import WoodenTables from '../../images/tables.jpg';
 import WomanPhoneImage from '../../images/woman-phone.jpg';
 import TablesImage from '../../images/wooden-tables-leaves.jpg';
+import Header from "components/Header";
 
 export default function Home() {
   return (
@@ -13,11 +14,9 @@ export default function Home() {
         <title>Istoo</title>
         <link rel="icon" href="favicon.ico" sizes="any" />
       </Head>
-      <header className="bg-header-green flex items-start w-full h-12 p-2">
-        <h1 className={`font-logo self-center uppercase text-sm font-extrabold tracking-tight text-slate-800 sm:text-2xl`}>
-          istoo.
-        </h1>
-      </header>
+      <Header 
+        isHome={true}
+      />
       <main className="flex justify-between max-h-screen  bg-slate-100 mt-0">
         <Image className={'hidden lg:block w-1/2 object-cover'} src={TablesImage} alt={"Picture of wooden tables and green leaves hanging from a ceiling"}></Image>
         <div className={'flex w-full lg:w-1/2 h-full flex-col justify-center p-24 text-start'}>
