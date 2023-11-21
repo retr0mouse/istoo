@@ -2,8 +2,11 @@ import Link from "next/link";
 import CitiesCombobox from "./CitiesCombobox";
 import LoginDialog from "./LoginDialog";
 import { UserIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
 
 export default function Header({ isHome }) {
+    const [selectedCity, setSelectedCity] = useState();
+    
     return (
         <>
             <header className="bg-header-green flex justify-between w-full h-18 py-2 px-4 items-center gap-12">
@@ -14,7 +17,7 @@ export default function Header({ isHome }) {
                         </h1>
                     </Link>
                     <div className={`hidden ${!isHome ? "lg:flex" : "null"}`}>
-                        <CitiesCombobox />
+                        <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
                     </div>
                 </div>
                 {!isHome ? (
@@ -33,7 +36,7 @@ export default function Header({ isHome }) {
                 </button>
             </header>
             <div className={`flex ${!isHome ? "lg:hidden" : "null"} mt-3 ml-3`}>
-                <CitiesCombobox />
+                <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
             </div>
         </>
     );
