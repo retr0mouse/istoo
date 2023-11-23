@@ -4,10 +4,13 @@ import CitiesCombobox from "./CitiesCombobox";
 import LoginDialog from "./LoginDialog";
 import LoginPopover from "./LoginPopover";
 import LoginButton from "./LoginButton";
+import RegisterButton from "./RegisterButton";
+import RegisterDialog from "./RegisterDialog";
 
 export default function Header({ isHome }) {
     const [selectedCity, setSelectedCity] = useState();
     const [loginShow, setLoginShow] = useState(false);
+    const [registerShow, setRegisterShow] = useState(false);
 
     return (
         <>
@@ -29,8 +32,9 @@ export default function Header({ isHome }) {
                         </div>
                         <div className="hidden lg:flex gap-2 self-center items-center w-48">
                             <LoginButton onClicked={() => setLoginShow(true)} />
+                            <RegisterButton onClicked={() => setRegisterShow(true)}/>
                             <LoginDialog onActivated={loginShow} onDisabled={() => setLoginShow(false)} />
-                            <button className={`w-1/2 h-10 bg-button-green rounded p-2 text-slate-100`}><span className={`font-mono`}>Sign up</span></button>
+                            <RegisterDialog onActivated={registerShow} onDisabled={() => setRegisterShow(false)} />
                         </div>
                         <LoginPopover onClicked={() => setLoginShow(true)} />
 
