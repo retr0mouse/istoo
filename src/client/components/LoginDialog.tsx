@@ -1,29 +1,27 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import LoginButton from './LoginButton';
 
-export default function LoginDialog() {
+export default function LoginDialog( {onActivated, onDisabled} ) {
     let [isOpen, setIsOpen] = useState(false);
 
     function closeDialog() {
         setIsOpen(false);
+        onDisabled();
     }
 
     function openDialog() {
         setIsOpen(true);
     }
 
+    useEffect(() => {
+        if (onActivated) {
+            openDialog();
+        }
+    }, [onActivated]) 
+
     return (
         <>
-            <div className="relative inset-0 flex items-center justify-center w-1/2 h-10">
-                <button
-                    type="button"
-                    onClick={openDialog}
-                    className="h-10 w-full"
-                >
-                    <span className="font-mono">Log In</span>
-                </button>
-            </div>
-
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={closeDialog}>
                     <Transition.Child
