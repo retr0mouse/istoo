@@ -1,11 +1,13 @@
 import Link from "next/link";
+import { useState } from "react";
 import CitiesCombobox from "./CitiesCombobox";
 import LoginDialog from "./LoginDialog";
-import { UserIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import LoginPopover from "./LoginPopover";
+import LoginButton from "./LoginButton";
 
 export default function Header({ isHome }) {
     const [selectedCity, setSelectedCity] = useState();
+    const [loginShow, setLoginShow] = useState(false);
     
     return (
         <>
@@ -26,14 +28,13 @@ export default function Header({ isHome }) {
                             <input placeholder="Search in Istoo..." type="text" className={`outline-none font-mono rounded py-2 px-4 w-full`} />
                         </div>
                         <div className="hidden lg:flex gap-2 self-center items-center w-48">
-                            <LoginDialog />
+                            <LoginButton onClicked={() => setLoginShow(true)}/>
+                            <LoginDialog onActivated={loginShow} onDisabled={() => setLoginShow(false)}/>
                             <button className={`w-1/2 h-10 bg-button-green rounded p-2 text-slate-100`}><span className={`font-mono`}>Sign up</span></button>
                         </div>
                     </>
                 ) : null}
-                <button className="w-10 lg:hidden border rounded-full bg-white mr-2">
-                    <UserIcon className="w-10 h-10 p-1"/>
-                </button>
+                <LoginPopover onClicked={() => setLoginShow(true)}/>
             </header>
             <div className={`flex ${!isHome ? "lg:hidden" : "null"} mt-3 ml-3`}>
                 <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
