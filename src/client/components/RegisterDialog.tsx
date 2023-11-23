@@ -1,8 +1,24 @@
 import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
+import { registrationInputs } from "utils/registrationInputs";
 
 export default function RegisterDialog( {onActivated, onDisabled} ) {
-    let [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const inputs = registrationInputs;
+
+    function checkInputs(name: string, value: string) {
+        const inputType = inputs.get(name);
+        if (!inputType || !value) return;
+        if (!inputType.pattern) {
+            return value.length > 0 ? "satisfies" : inputType.errorMessage;
+        }
+        console.log(inputType.pattern, value,  inputType.pattern.test(value));
+        return !inputType.pattern.test(value) ? inputType.errorMessage : "satisfies";
+    }
 
     function closeDialog() {
         setIsOpen(false);
@@ -54,15 +70,19 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
                                         Sign up to Istoo
                                     </Dialog.Title>
                                     <div className="mt-2 flex flex-col w-full gap-2">
-                                        <input type="text" placeholder='Email' className={`p-2 font-sans w-full border`} />
-                                        <input type="text" placeholder='Username' className={`p-2 font-sans w-full border`} />
-                                        <input type="text" placeholder='Password' className={`p-2 font-sans w-full border`} />
-                                        <input type="text" placeholder='Repeat Password' className={`p-2 font-sans w-full border`} />
+                                        <label htmlFor="email" defaultValue={""}>{checkInputs("email", email)}</label>
+                                        <input name={"email"} type="text" placeholder='Email' value={email} className={`p-2 font-sans w-full border`} onChange={(event) => setEmail(event.target.value)}/>
+                                        <label htmlFor="username" defaultValue={""}>{checkInputs("username", username)}</label>
+                                        <input name={"username"} type="text" placeholder='Username' value={username} className={`p-2 font-sans w-full border`} onChange={(event) => setUsername(event.target.value)}/>
+                                        <label htmlFor="password">{checkInputs("password", password)}</label>
+                                        <input name={"password"} type="text" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)}/>
+                                        <label htmlFor="confirmPassword" defaultValue={""}>{checkInputs("confirmPassword", confirmPassword)}</label>
+                                        <input name={"confirmPassword"} type="text" placeholder='Repeat Password' value={confirmPassword} className={`p-2 font-sans w-full border`} onChange={(event) => setConfirmPassword(event.target.value)}/>
                                     </div>
                                     <button
                                         type="button"
                                         className="mt-2 w-full rounded-sm bg-button-green px-4 py-2 text-2xl font-mono font-medium text-slate-100"
-                                        onClick={closeDialog}
+                                        onClick={() => console.log("kek")}
                                     >
                                         Go
                                     </button>
