@@ -8,7 +8,7 @@ import LoginButton from "./LoginButton";
 export default function Header({ isHome }) {
     const [selectedCity, setSelectedCity] = useState();
     const [loginShow, setLoginShow] = useState(false);
-    
+
     return (
         <>
             <header className="bg-header-green flex justify-between w-full h-18 py-2 px-4 items-center gap-12">
@@ -18,7 +18,7 @@ export default function Header({ isHome }) {
                             istoo.
                         </h1>
                     </Link>
-                    <div className={`hidden ${!isHome ? "lg:flex" : "null"}`}>
+                    <div className={`${!isHome ? "hidden lg:flex" : "hidden"}`}>
                         <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
                     </div>
                 </div>
@@ -28,15 +28,16 @@ export default function Header({ isHome }) {
                             <input placeholder="Search in Istoo..." type="text" className={`outline-none font-mono rounded py-2 px-4 w-full`} />
                         </div>
                         <div className="hidden lg:flex gap-2 self-center items-center w-48">
-                            <LoginButton onClicked={() => setLoginShow(true)}/>
-                            <LoginDialog onActivated={loginShow} onDisabled={() => setLoginShow(false)}/>
+                            <LoginButton onClicked={() => setLoginShow(true)} />
+                            <LoginDialog onActivated={loginShow} onDisabled={() => setLoginShow(false)} />
                             <button className={`w-1/2 h-10 bg-button-green rounded p-2 text-slate-100`}><span className={`font-mono`}>Sign up</span></button>
                         </div>
+                        <LoginPopover onClicked={() => setLoginShow(true)} />
+
                     </>
                 ) : null}
-                <LoginPopover onClicked={() => setLoginShow(true)}/>
             </header>
-            <div className={`flex ${!isHome ? "lg:hidden" : "null"} mt-3 ml-3`}>
+            <div className={`${!isHome ?  "flex lg:hidden": "hidden"} mt-3 ml-3`}>
                 <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
             </div>
         </>

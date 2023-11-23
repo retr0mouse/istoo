@@ -15,7 +15,9 @@ export default function LoginDialog( {onActivated, onDisabled} ) {
     }
 
     useEffect(() => {
-        openDialog();
+        if (onActivated) {
+            openDialog();
+        }
     }, [onActivated]) 
 
     return (
