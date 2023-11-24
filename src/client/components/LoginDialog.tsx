@@ -1,8 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
-import LoginButton from './LoginButton';
 
-export default function LoginDialog( {onActivated, onDisabled} ) {
+export default function LoginDialog( {onActivated, onDisabled, onClicked} ) {
     let [isOpen, setIsOpen] = useState(false);
 
     function closeDialog() {
@@ -12,6 +11,11 @@ export default function LoginDialog( {onActivated, onDisabled} ) {
 
     function openDialog() {
         setIsOpen(true);
+    }
+
+    function openRegisterDialog() {
+        closeDialog();
+        onClicked();
     }
 
     useEffect(() => {
@@ -69,7 +73,7 @@ export default function LoginDialog( {onActivated, onDisabled} ) {
                                     >
                                         Go
                                     </button>
-
+                                    <button onClick={() => openRegisterDialog()} className={"text-uppercase p-2 bg-slate-200 rounded-md mt-2 font-sans"}>Register new account</button>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

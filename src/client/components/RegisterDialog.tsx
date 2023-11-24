@@ -2,7 +2,7 @@ import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { registrationInputs } from "utils/registrationInputs";
 
-export default function RegisterDialog( {onActivated, onDisabled} ) {
+export default function RegisterDialog( {onActivated, onDisabled, onClicked} ) {
     const [isOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -27,6 +27,11 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
 
     function openDialog() {
         setIsOpen(true);
+    }
+
+    function openLoginDialog() {
+        closeDialog();
+        onClicked();
     }
 
     useEffect(() => {
@@ -86,7 +91,7 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
                                     >
                                         Go
                                     </button>
-
+                                    <button onClick={() => openLoginDialog()} className={"text-uppercase p-2 bg-slate-200 rounded-md mt-2 font-sans"}>I already have an account</button>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
