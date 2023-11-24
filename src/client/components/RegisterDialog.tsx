@@ -2,7 +2,7 @@ import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { registrationInputs } from "utils/registrationInputs";
 
-export default function RegisterDialog( {onActivated, onDisabled} ) {
+export default function RegisterDialog( {onActivated, onDisabled, onClicked} ) {
     const [isOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -14,10 +14,13 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
         const inputType = inputs.get(name);
         if (!inputType || !value) return;
         if (!inputType.pattern) {
-            return value.length > 0 ? "satisfies" : inputType.errorMessage;
+            return value.length > 0 ? "" : inputType.errorMessage;
         }
-        console.log(inputType.pattern, value,  inputType.pattern.test(value));
-        return !inputType.pattern.test(value) ? inputType.errorMessage : "satisfies";
+        return !inputType.pattern.test(value) ? inputType.errorMessage : "";
+    }
+
+    function comparePasswords() {
+        return password === confirmPassword ? "" : "Passwords do not match!";
     }
 
     function closeDialog() {
@@ -27,6 +30,11 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
 
     function openDialog() {
         setIsOpen(true);
+    }
+
+    function openLoginDialog() {
+        closeDialog();
+        onClicked();
     }
 
     useEffect(() => {
@@ -75,9 +83,9 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
                                         <label htmlFor="username" defaultValue={""}>{checkInputs("username", username)}</label>
                                         <input name={"username"} type="text" placeholder='Username' value={username} className={`p-2 font-sans w-full border`} onChange={(event) => setUsername(event.target.value)}/>
                                         <label htmlFor="password">{checkInputs("password", password)}</label>
-                                        <input name={"password"} type="text" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)}/>
-                                        <label htmlFor="confirmPassword" defaultValue={""}>{checkInputs("confirmPassword", confirmPassword)}</label>
-                                        <input name={"confirmPassword"} type="text" placeholder='Repeat Password' value={confirmPassword} className={`p-2 font-sans w-full border`} onChange={(event) => setConfirmPassword(event.target.value)}/>
+                                        <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)}/>
+                                        <label htmlFor="confirmPassword" defaultValue={""}>{comparePasswords()}</label>
+                                        <input name={"confirmPassword"} type="password" placeholder='Repeat Password' value={confirmPassword} className={`p-2 font-sans w-full border`} onChange={(event) => setConfirmPassword(event.target.value)}/>
                                     </div>
                                     <button
                                         type="button"
@@ -86,7 +94,7 @@ export default function RegisterDialog( {onActivated, onDisabled} ) {
                                     >
                                         Go
                                     </button>
-
+                                    <button onClick={() => openLoginDialog()} className={"text-uppercase p-2 bg-slate-200 rounded-md mt-2 font-sans"}>I already have an account</button>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

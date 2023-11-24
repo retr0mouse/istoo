@@ -33,8 +33,8 @@ export default function Header({ isHome }) {
                         <div className="hidden lg:flex gap-2 self-center items-center w-48">
                             <LoginButton onClicked={() => setLoginShow(true)} />
                             <RegisterButton onClicked={() => setRegisterShow(true)}/>
-                            <LoginDialog onActivated={loginShow} onDisabled={() => setLoginShow(false)} />
-                            <RegisterDialog onActivated={registerShow} onDisabled={() => setRegisterShow(false)} />
+                            <LoginDialog onClicked={() => setRegisterShow(true)} onActivated={loginShow} onDisabled={() => setLoginShow(false)} />
+                            <RegisterDialog onClicked={() => setLoginShow(true)} onActivated={registerShow} onDisabled={() => setRegisterShow(false)} />
                         </div>
                         <LoginPopover onClicked={() => setLoginShow(true)} />
 
