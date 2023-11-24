@@ -16,7 +16,6 @@ export default function RegisterDialog( {onActivated, onDisabled, onClicked} ) {
         if (!inputType.pattern) {
             return value.length > 0 ? "" : inputType.errorMessage;
         }
-        console.log(inputType.pattern, value,  inputType.pattern.test(value));
         return !inputType.pattern.test(value) ? inputType.errorMessage : "";
     }
 

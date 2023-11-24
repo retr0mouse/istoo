@@ -1,8 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
+import { registrationInputs } from 'utils/registrationInputs';
 
-export default function LoginDialog( {onActivated, onDisabled, onClicked} ) {
+export default function LoginDialog({ onActivated, onDisabled, onClicked }) {
     let [isOpen, setIsOpen] = useState(false);
+    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
+    const inputs = registrationInputs;
+
+    function checkInputs(name: string, value: string) {
+        const inputType = inputs.get(name);
+        if (!inputType || !value) return;
+        if (!inputType.pattern) {
+            return value.length > 0 ? "" : inputType.errorMessage;
+        }
+        return !inputType.pattern.test(value) ? inputType.errorMessage : "";
+    }
 
     function closeDialog() {
         setIsOpen(false);
@@ -22,7 +37,7 @@ export default function LoginDialog( {onActivated, onDisabled, onClicked} ) {
         if (onActivated) {
             openDialog();
         }
-    }, [onActivated]) 
+    }, [onActivated])
 
     return (
         <>
@@ -59,8 +74,10 @@ export default function LoginDialog( {onActivated, onDisabled, onClicked} ) {
                                         Log in to Istoo
                                     </Dialog.Title>
                                     <div className="mt-2 flex flex-col w-full gap-2">
-                                        <input type="text" placeholder='Email or username' className={`p-2 font-sans w-full border`} />
-                                        <input type="text" placeholder='Password' className={`p-2 font-sans w-full border`} />
+                                        <label htmlFor="email" defaultValue={""}>{checkInputs("email", email)}</label>
+                                        <input name={"email"} type="text" placeholder='Email' value={email} className={`p-2 font-sans w-full border`} onChange={(event) => setEmail(event.target.value)} />
+                                        <label htmlFor="password">{}</label>
+                                        <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)} />
                                     </div>
                                     <div>
                                         <input className="checked:bg-button-green" type="radio" id="remember" />
