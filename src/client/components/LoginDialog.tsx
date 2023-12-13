@@ -80,7 +80,7 @@ export default function LoginDialog({ onActivated, onDisabled, onClicked }) {
                                         <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)} />
                                     </div>
                                     <div>
-                                        <input className="checked:bg-button-green" type="radio" id="remember" />
+                                        <input className="checked:bg-button-green" type="checkbox" id="remember" />
                                         <label className="font-mono ml-4" htmlFor="remember">Remember me</label>
                                     </div>
                                     <button
