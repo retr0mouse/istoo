@@ -1,6 +1,6 @@
 import { RegistrationInput } from "types/registrationInput";
 
-export const registrationInputs = new Map<string, RegistrationInput>([
+export const registrationInputsTemplates = new Map<string, RegistrationInput>([
     ["username", {
         name: "username",
         errorMessage:"Username should be 3-16 characters and shouldn't include any special character!",
@@ -13,14 +13,8 @@ export const registrationInputs = new Map<string, RegistrationInput>([
         label: "Password",
         pattern: new RegExp(`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`)
     }],
-    ["confirmPassoword", {
-        name: "confirmPassword",
-        errorMessage:"Passwords don't match!",
-        label: "Confirm Password",
-        pattern: null
-    }],
     ["email", {
-        name: "Email",
+        name: "email",
         errorMessage:"It should be a valid email address!",
         label: "Email",
         pattern: new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)

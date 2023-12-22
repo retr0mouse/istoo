@@ -1,26 +1,44 @@
 import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { registrationInputs } from "utils/registrationInputs";
+import { registrationInputsTemplates } from "utils/registrationInputs";
+import { User } from "types/user";
+import { RegisterUser } from "api/registerUser";
 
-export default function RegisterDialog( {onActivated, onDisabled, onClicked} ) {
+export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
     const [isOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const inputs = registrationInputs;
+    const inputsTemplates = registrationInputsTemplates;
 
-    function checkInputs(name: string, value: string) {
-        const inputType = inputs.get(name);
-        if (!inputType || !value) return;
+    function getErrorMessage(inputName: string, inputValue: string): string {
+        const inputType = inputsTemplates.get(inputName);
+        let errorMessage: string;
+        if (!inputType || !inputValue) return;
         if (!inputType.pattern) {
-            return value.length > 0 ? "" : inputType.errorMessage;
+            errorMessage = inputValue.length > 0 ? "" : inputType.errorMessage;
+        } else {
+            errorMessage = !inputType.pattern.test(inputValue) ? inputType.errorMessage : "";
         }
-        return !inputType.pattern.test(value) ? inputType.errorMessage : "";
+        return errorMessage;
     }
 
-    function comparePasswords() {
-        return password === confirmPassword ? "" : "Passwords do not match!";
+    function validateInputs(): boolean {
+        const usernamePattern = inputsTemplates.get("username").pattern;
+        const passwordPattern = inputsTemplates.get("password").pattern;
+        const emailPattern = inputsTemplates.get("email").pattern;
+        if (
+            !comparePasswords() ||
+            !usernamePattern.test(username) ||
+            !passwordPattern.test(password) ||
+            !emailPattern.test(email)
+        ) return false;
+        return true;
+    }
+
+    function comparePasswords(): boolean {
+        return password === confirmPassword;
     }
 
     function closeDialog() {
@@ -37,11 +55,27 @@ export default function RegisterDialog( {onActivated, onDisabled, onClicked} ) {
         onClicked();
     }
 
+    async function registerUser() {
+        if (!validateInputs()) {
+            console.log("inputs are not correct");
+            return;
+        };
+        const user = {
+            username: username,
+            password: password,
+            email: email
+        } as User;
+        const result = await RegisterUser(user);
+        if (!result.ok) {
+            console.log(result.error);
+        }
+    }
+
     useEffect(() => {
         if (onActivated) {
             openDialog();
         }
-    }, [onActivated]) 
+    }, [onActivated])
 
     return (
         <>
@@ -78,19 +112,19 @@ export default function RegisterDialog( {onActivated, onDisabled, onClicked} ) {
                                         Sign up to Istoo
                                     </Dialog.Title>
                                     <div className="mt-2 flex flex-col w-full gap-2">
-                                        <label htmlFor="email" defaultValue={""}>{checkInputs("email", email)}</label>
-                                        <input name={"email"} type="text" placeholder='Email' value={email} className={`p-2 font-sans w-full border`} onChange={(event) => setEmail(event.target.value)}/>
-                                        <label htmlFor="username" defaultValue={""}>{checkInputs("username", username)}</label>
-                                        <input name={"username"} type="text" placeholder='Username' value={username} className={`p-2 font-sans w-full border`} onChange={(event) => setUsername(event.target.value)}/>
-                                        <label htmlFor="password">{checkInputs("password", password)}</label>
-                                        <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)}/>
-                                        <label htmlFor="confirmPassword" defaultValue={""}>{comparePasswords()}</label>
-                                        <input name={"confirmPassword"} type="password" placeholder='Repeat Password' value={confirmPassword} className={`p-2 font-sans w-full border`} onChange={(event) => setConfirmPassword(event.target.value)}/>
+                                        <label htmlFor="email" defaultValue={""}>{getErrorMessage("email", email)}</label>
+                                        <input name={"email"} type="text" placeholder='Email' value={email} className={`p-2 font-sans w-full border`} onChange={(event) => setEmail(event.target.value)} />
+                                        <label htmlFor="username" defaultValue={""}>{getErrorMessage("username", username)}</label>
+                                        <input name={"username"} type="text" placeholder='Username' value={username} className={`p-2 font-sans w-full border`} onChange={(event) => setUsername(event.target.value)} />
+                                        <label htmlFor="password">{getErrorMessage("password", password)}</label>
+                                        <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)} />
+                                        <label htmlFor="confirmPassword" defaultValue={""}>{comparePasswords() ? "" : "Passwords do not match!"}</label>
+                                        <input name={"confirmPassword"} type="password" placeholder='Repeat Password' value={confirmPassword} className={`p-2 font-sans w-full border`} onChange={(event) => setConfirmPassword(event.target.value)} />
                                     </div>
                                     <button
                                         type="button"
                                         className="mt-2 w-full rounded-sm bg-button-green px-4 py-2 text-2xl font-mono font-medium text-slate-100"
-                                        onClick={() => console.log("kek")}
+                                        onClick={() => registerUser()}
                                     >
                                         Go
                                     </button>
