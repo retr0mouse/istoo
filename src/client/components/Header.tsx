@@ -4,8 +4,8 @@ import CitiesCombobox from "./CitiesCombobox";
 import LoginDialog from "./LoginDialog";
 import LoginPopover from "./LoginPopover";
 import LoginButton from "./LoginButton";
-import RegisterButton from "./RegisterButton";
-import RegisterDialog from "./RegisterDialog";
+import RegisterButton from "./RegitrationButton";
+import RegisterDialog from "./RegistrationDialog";
 
 export default function Header({ isHome }) {
     const [selectedCity, setSelectedCity] = useState();

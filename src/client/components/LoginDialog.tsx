@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { registrationInputs } from 'utils/registrationInputs';
+import { registrationInputsTemplates } from 'utils/registrationInputs';
 
 export default function LoginDialog({ onActivated, onDisabled, onClicked }) {
     let [isOpen, setIsOpen] = useState(false);
@@ -8,7 +8,7 @@ export default function LoginDialog({ onActivated, onDisabled, onClicked }) {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const inputs = registrationInputs;
+    const inputs = registrationInputsTemplates;
 
     function checkInputs(name: string, value: string) {
         const inputType = inputs.get(name);
