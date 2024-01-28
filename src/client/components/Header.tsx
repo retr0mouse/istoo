@@ -9,8 +9,8 @@ import RegisterDialog from "./RegistrationDialog";
 
 export default function Header({ isHome }) {
     const [selectedCity, setSelectedCity] = useState();
-    const [loginShow, setLoginShow] = useState(false);
-    const [registerShow, setRegisterShow] = useState(false);
+    const [loginShow, setLoginShow] = useState<boolean>(false);
+    const [registerShow, setRegisterShow] = useState<boolean>(false);
 
     return (
         <>

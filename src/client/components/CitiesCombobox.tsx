@@ -21,7 +21,7 @@ export default function CitiesCombobox({selectedCity, onSelected}) {
 
   useEffect(() => {
       onSelected(selected);
-  }, [selected])
+  }, [selected, onSelected])
 
   useEffect(() => {
     if (selectedCity) {
@@ -32,12 +32,12 @@ export default function CitiesCombobox({selectedCity, onSelected}) {
   const filteredCities =
     query === ''
       ? cities
-      : cities.filter((city) =>
+      : cities.filter((city: City) =>
         city.title
           .toLowerCase()
           .replace(/\s+/g, '')
           .includes(query.toLowerCase().replace(/\s+/g, ''))
-      )
+      );
 
   return (
     <Combobox value={selected} onChange={(city) => setSelected(city)}>
