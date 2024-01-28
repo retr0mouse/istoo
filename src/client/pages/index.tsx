@@ -18,7 +18,7 @@ export default function Home() {
         isHome={true}
       />
       <main className="flex justify-between max-h-screen  bg-slate-100 mt-0">
-        <Image className={'hidden lg:block w-1/2 object-cover'} src={TablesImage} alt={"Picture of wooden tables and green leaves hanging from a ceiling"}></Image>
+        <Image className={'hidden lg:block w-1/2 object-cover'} src={TablesImage} priority alt={"Picture of wooden tables and green leaves hanging from a ceiling"}></Image>
         <div className={'flex w-full lg:w-1/2 h-full flex-col justify-center p-24 text-start'}>
           <h1 className={`font-mono text-6xl font-bold`}>Book a table easily</h1>
           <h2 className={`font-mono text-2xl my-8`}>Say goodbye to waiting times with our restaurant seating app. Reserve your spot hassle-free.</h2>

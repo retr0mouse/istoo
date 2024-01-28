@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import cors from 'cors';
 import { addUserDB, getAllUsersDB, getUserByNameDB } from '../db/queries.js';
 import { loginUser } from '../middleware/account/login.js';
 import { deleteUser } from '../middleware/account/modify.js';
@@ -8,13 +9,13 @@ import { authenticate } from '../middleware/auth.js';
 
 const app = express();
 const port = 1234;
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
-
 );
 
 // GET user by name

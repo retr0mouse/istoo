@@ -24,7 +24,7 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
         return errorMessage;
     }
 
-    function validateInputs(): boolean {
+    function areAllInputsValid(): boolean {
         const usernamePattern = inputsTemplates.get("username").pattern;
         const passwordPattern = inputsTemplates.get("password").pattern;
         const emailPattern = inputsTemplates.get("email").pattern;
@@ -41,22 +41,22 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
         return password === confirmPassword;
     }
 
-    function closeDialog() {
+    function closeRegisterDialog() {
         setIsOpen(false);
         onDisabled();
     }
 
-    function openDialog() {
+    function openRegisterDialog() {
         setIsOpen(true);
     }
 
     function openLoginDialog() {
-        closeDialog();
+        closeRegisterDialog();
         onClicked();
     }
 
     async function registerUser() {
-        if (!validateInputs()) {
+        if (!areAllInputsValid()) {
             console.log("inputs are not correct");
             return;
         };
@@ -65,6 +65,7 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
             password: password,
             email: email
         } as User;
+
         const result = await RegisterUser(user);
         if (!result.ok) {
             console.log(result.error);
@@ -73,14 +74,14 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
 
     useEffect(() => {
         if (onActivated) {
-            openDialog();
+            openRegisterDialog();
         }
     }, [onActivated])
 
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={closeDialog}>
+                <Dialog as="div" className="relative z-10" onClose={closeRegisterDialog}>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
