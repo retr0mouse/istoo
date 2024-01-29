@@ -1,10 +1,10 @@
 import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { registrationInputsTemplates } from "utils/registrationInputs";
-import { User } from "types/user";
+import { type User } from "types/user";
 import { RegisterUser } from "api/registerUser";
 
-export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
+export default function RegisterDialog({ onActivated, onDisabled, onClicked }: { onActivated: boolean, onDisabled: () => void, onClicked: () => void }) {
     const [isOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -59,7 +59,7 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
         if (!areAllInputsValid()) {
             console.log("inputs are not correct");
             return;
-        };
+        }
         const user = {
             username: username,
             password: password,

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import CitiesCombobox from "./CitiesCombobox";
+import CitiesCombobox, { type City } from "./CitiesCombobox";
 import LoginDialog from "./LoginDialog";
 import LoginPopover from "./LoginPopover";
 import LoginButton from "./LoginButton";
@@ -8,7 +8,7 @@ import RegisterButton from "./RegitrationButton";
 import RegisterDialog from "./RegistrationDialog";
 
 export default function Header({ isHome }) {
-    const [selectedCity, setSelectedCity] = useState();
+    const [selectedCity, setSelectedCity] = useState<City>();
     const [loginShow, setLoginShow] = useState<boolean>(false);
     const [registerShow, setRegisterShow] = useState<boolean>(false);
 

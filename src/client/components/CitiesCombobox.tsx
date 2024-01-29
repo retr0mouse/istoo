@@ -2,7 +2,7 @@ import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon, MapPinIcon } from '@heroicons/react/20/solid';
 import { Fragment, useEffect, useState } from 'react';
 
-type City = {
+export type City = {
   id: number,
   title: string
 };
@@ -15,7 +15,7 @@ const cities = [
   { id: 5, title: 'Paide' },
 ] as City[];
 
-export default function CitiesCombobox({selectedCity, onSelected}) {
+export default function CitiesCombobox({selectedCity, onSelected}: {selectedCity?: City, onSelected: (city: City) => void}) {
   const [selected, setSelected] = useState(cities[0])
   const [query, setQuery] = useState('')
 
