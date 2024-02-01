@@ -1,7 +1,7 @@
 `use client`
 import { type User } from "types/user";
 
-export async function RegisterUser(user: User) {
+export async function RegisterUser(user: User): Promise<number> {
     if (!user.email || !user.password || !user.username) {
         return;
     }
@@ -9,12 +9,21 @@ export async function RegisterUser(user: User) {
         wohoo backend url: ${process.env.NEXT_PUBLIC_BACKEND_URL}/register
     `);
     
-    const result = ((await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-            "Content-Type": "application/json",
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
+            method: "POST",
+            body: JSON.stringify(user),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if (response.ok) {
+            return 200;
+        } else {
+            throw new Error("Failed to register user");
         }
-    })));
-    return result.json();
+    } catch (error) {
+        console.error(error);
+    }
 }
