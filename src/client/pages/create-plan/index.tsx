@@ -1,10 +1,10 @@
-import { DndContext, DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
+import { DndContext, type DragEndEvent, type UniqueIdentifier } from "@dnd-kit/core";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { Droppable } from "../../components/Droppable";
 import { TableDraggable } from "../../components/TableDraggable";
-import { DraggableItem } from "../../types/draggableItem";
+import { type DraggableItem } from "../../types/draggableItem";
 
 
 export default function CreatePlan() {
@@ -17,6 +17,7 @@ export default function CreatePlan() {
     );
     const [uniqueDraggables, setUniqueDraggables] = useState<Map<UniqueIdentifier, string>>(new Map()); // 2f5062bc-a0f6-4954-b66b-d5337fb3e2b1: EF'
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [draggables, setDraggable] = useState([TableDraggable]);
     const [xSliderValue, setXSliderValue] = useState(10);
     const [ySliderValue, setYSliderValue] = useState(10);

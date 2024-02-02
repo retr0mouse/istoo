@@ -1,10 +1,10 @@
 import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { registrationInputsTemplates } from "utils/registrationInputs";
-import { User } from "types/user";
+import { type User } from "types/user";
 import { RegisterUser } from "api/registerUser";
 
-export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
+export default function RegisterDialog({ onActivated, onDisabled, onClicked }: { onActivated: boolean, onDisabled: () => void, onClicked: () => void }) {
     const [isOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -55,21 +55,22 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
         onClicked();
     }
 
-    async function registerUser() {
+    async function sendRequestToCreateUser(): Promise<void> {
         if (!areAllInputsValid()) {
             console.log("inputs are not correct");
             return;
-        };
+        }
         const user = {
             username: username,
             password: password,
             email: email
         } as User;
 
-        const result = await RegisterUser(user);
-        if (!result.ok) {
-            console.log(result.error);
-        }
+        try {
+            await RegisterUser(user)
+        } catch (error) {
+            console.log(error);
+        }        
     }
 
     useEffect(() => {
@@ -125,7 +126,11 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }) {
                                     <button
                                         type="button"
                                         className="mt-2 w-full rounded-sm bg-button-green px-4 py-2 text-2xl font-mono font-medium text-slate-100"
-                                        onClick={() => registerUser()}
+                                        onClick={() => {
+                                            sendRequestToCreateUser().catch((error) => {
+                                                // TODO: setErrorMessage('An error occurred while creating your account. Please try again.');
+                                              });
+                                          }}
                                     >
                                         Go
                                     </button>

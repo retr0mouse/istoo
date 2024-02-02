@@ -1,4 +1,4 @@
-import { AppProps } from "next/app";
+import { type AppProps } from "next/app";
 import "../../styles/globals.css";
 import { Alegreya, Koulen, Lato } from "next/font/google";
 
@@ -34,4 +34,4 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
     </>
   );
-};
+}

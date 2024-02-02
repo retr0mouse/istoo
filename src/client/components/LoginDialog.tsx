@@ -2,16 +2,17 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
 import { registrationInputsTemplates } from 'utils/registrationInputs';
 
-export default function LoginDialog({ onActivated, onDisabled, onClicked }) {
-    let [isOpen, setIsOpen] = useState(false);
-    const [username, setUsername] = useState<string>("");
+export default function LoginDialog({ onActivated, onDisabled, onClicked }: {onActivated: boolean, onDisabled: () => void, onClicked: () => void}) {
+    const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const inputs = registrationInputsTemplates;
 
-    function checkInputs(name: string, value: string) {
-        const inputType = inputs.get(name);
+    type CheckInputs = (type: string, value: string) => string;
+
+    const checkInputs: CheckInputs = (type, value) => {
+        const inputType = inputs.get(type);
         if (!inputType || !value) return;
         if (!inputType.pattern) {
             return value.length > 0 ? "" : inputType.errorMessage;
@@ -76,7 +77,7 @@ export default function LoginDialog({ onActivated, onDisabled, onClicked }) {
                                     <div className="mt-2 flex flex-col w-full gap-2">
                                         <label htmlFor="email" defaultValue={""}>{checkInputs("email", email)}</label>
                                         <input name={"email"} type="text" placeholder='Email' value={email} className={`p-2 font-sans w-full border`} onChange={(event) => setEmail(event.target.value)} />
-                                        <label htmlFor="password">{}</label>
+                                        <label htmlFor="password">{ }</label>
                                         <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)} />
                                     </div>
                                     <div>

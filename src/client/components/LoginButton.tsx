@@ -1,4 +1,4 @@
-export default function LoginButton({ onClicked }) {
+export default function LoginButton({ onClicked }: { onClicked: () => void }) {
     return (
         <div className="relative inset-0 flex items-center justify-center w-1/2 h-10">
             <button
