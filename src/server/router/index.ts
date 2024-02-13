@@ -30,7 +30,12 @@ app.get('/users/:username', async (request, response) => {
   }
   const result = await getUserByNameDB(parsedUsername);
   if (result.success) { // TODO: this will be true even if user was not found
-    response.status(200);
+    if (!result.data || result.data.length == 0) {
+      response.status(404);
+      response.json({ error: "User not found" });
+      return;
+    }
+    response.status(404);
     response.json({ data: result.data });
     return;
   }
@@ -88,7 +93,7 @@ app.post('/login', async (request, response) => {
   const result = await loginUser(request.body.login, request.body.password);
   if (result.success) {
     response.status(200);
-    response.json({token: result.data});
+    response.json({ token: result.data });
     return;
   }
   response.status(500);
@@ -132,5 +137,6 @@ app.delete('/users/:userEmail', async (request, response) => {
 });
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}.`);
+  console.log(`Backend running on http://localhost:${port}.
+Do not forget to run the watch task to compile the TypeScript files you dumbass.`);
 });
