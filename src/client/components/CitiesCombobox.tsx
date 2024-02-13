@@ -15,20 +15,12 @@ const cities = [
   { id: 5, title: 'Paide' },
 ] as City[];
 
-export default function CitiesCombobox({selectedCity, onSelected}: {selectedCity?: City, onSelected: (city: City) => void}) {
-  const [selected, setSelected] = useState(cities[0])
-  const [query, setQuery] = useState('')
+export default function CitiesCombobox({ selectedCity, onSelected }: { selectedCity?: City, onSelected: (city: City) => void }) {
+  const [query, setQuery] = useState('');
 
-  useEffect(() => {
-      onSelected(selected);
-  }, [selected, onSelected])
-
-  useEffect(() => {
-    if (selectedCity) {
-      setSelected(selectedCity);
-    }
-  }, [selectedCity]);
-
+  const handleSelectChange = (city: City) => {
+    onSelected(city);
+  }
   const filteredCities =
     query === ''
       ? cities
@@ -40,7 +32,7 @@ export default function CitiesCombobox({selectedCity, onSelected}: {selectedCity
       );
 
   return (
-    <Combobox value={selected} onChange={(city) => setSelected(city)}>
+    <Combobox value={selectedCity} onChange={(city) => handleSelectChange(city)}>
       <div className="relative w-56 h-12">
         <div className="cursor-pointer flex h-full items-center relative rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
           <MapPinIcon className="h-12 w-24 p-2 text-gray-600" />

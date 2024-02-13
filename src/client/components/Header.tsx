@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { useState } from "react";
 import CitiesCombobox, { type City } from "./CitiesCombobox";
+import LoginButton from "./LoginButton";
 import LoginDialog from "./LoginDialog";
 import LoginPopover from "./LoginPopover";
-import LoginButton from "./LoginButton";
-import RegisterButton from "./RegitrationButton";
 import RegisterDialog from "./RegistrationDialog";
+import RegisterButton from "./RegitrationButton";
 
 export default function Header({ isHome }) {
-    const [selectedCity, setSelectedCity] = useState<City>();
+    const [globallySelectedCity, setGloballySelectedCity] = useState<City>({title: "Tallinn", id: 1} as City);
     const [loginShow, setLoginShow] = useState<boolean>(false);
     const [registerShow, setRegisterShow] = useState<boolean>(false);
+
+    const handleSelectedCity = (city: City) => {
+        setGloballySelectedCity(city);
+    }
 
     return (
         <>
@@ -22,7 +26,7 @@ export default function Header({ isHome }) {
                         </h1>
                     </Link>
                     <div className={`${!isHome ? "hidden lg:flex" : "hidden"}`}>
-                        <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
+                        <CitiesCombobox selectedCity={globallySelectedCity} onSelected={handleSelectedCity} />
                     </div>
                 </div>
                 {!isHome ? (
@@ -42,7 +46,7 @@ export default function Header({ isHome }) {
                 ) : null}
             </header>
             <div className={`${!isHome ?  "flex lg:hidden": "hidden"} mt-3 ml-3`}>
-                <CitiesCombobox selectedCity={selectedCity} onSelected={(city) => setSelectedCity(city)} />
+                <CitiesCombobox selectedCity={globallySelectedCity} onSelected={handleSelectedCity} />
             </div>
         </>
     );
