@@ -14,7 +14,7 @@ export async function registerUser(credentials: { username: string, email: strin
         console.error(err.message);
         return { success: false, error: err };
     }
-    
+
     const foundUser = await getUserByEmailDB(stringEmail);
 
     if (foundUser.data.length != 0) {
@@ -22,7 +22,7 @@ export async function registerUser(credentials: { username: string, email: strin
         console.error(err.message);
         return { success: false, error: err };
     }
-    
+
     // Pass the string values to addUser function
     return await addUserDB({
         username: stringUsername,
