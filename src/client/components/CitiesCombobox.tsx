@@ -18,9 +18,6 @@ const cities = [
 export default function CitiesCombobox({ selectedCity, onSelected }: { selectedCity?: City, onSelected: (city: City) => void }) {
   const [query, setQuery] = useState('');
 
-  const handleSelectChange = (city: City) => {
-    onSelected(city);
-  }
   const filteredCities =
     query === ''
       ? cities
@@ -32,7 +29,7 @@ export default function CitiesCombobox({ selectedCity, onSelected }: { selectedC
       );
 
   return (
-    <Combobox value={selectedCity} onChange={(city) => handleSelectChange(city)}>
+    <Combobox value={selectedCity} onChange={(city) => onSelected(city)}>
       <div className="relative w-56 h-12">
         <div className="cursor-pointer flex h-full items-center relative rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
           <MapPinIcon className="h-12 w-24 p-2 text-gray-600" />
