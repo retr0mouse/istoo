@@ -47,7 +47,6 @@ export async function addUserDB(request: { username: string, password: string, e
             VALUES ($1, $2, $3, $4, $5);
         `;
         const createdOn = getCurrentDate();
-        console.log(createdOn);
         const queryValues = [username, hashedPassword, email, createdOn, null];
 
         await query(queryText, queryValues);
