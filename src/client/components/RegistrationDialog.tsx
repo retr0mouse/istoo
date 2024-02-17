@@ -67,10 +67,13 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
         } as User;
 
         try {
-            await RegisterUser(user)
+            await RegisterUser(user);
+            // TODO: redirect to the success screen to be able to log in
+            
         } catch (error) {
             console.log(error);
         }        
+        closeRegisterDialog();
     }
 
     useEffect(() => {
