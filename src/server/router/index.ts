@@ -78,14 +78,20 @@ app.post('/users', async (request, response) => {
 
 // Register a new account 
 app.post('/register', async (request, response) => {
-  const result = await registerUser(request.body);
-  if (result.success) {
-    response.status(200);
-    response.json();
-    return;
+  try {
+    const result = await registerUser(request.body);
+    if (result.success) {
+      response.status(200);
+      response.json();
+      return;
+    } else if (!result.success) {
+      response.status(500);
+      response.json({ error: result.error?.message });
+    }
+  } catch (error: any) { // Update the type of the error parameter
+    response.status(500);
+    response.json({ error: error ? error.message : "An error occurred" });
   }
-  response.status(500);
-  response.json({ error: result.error?.message });
 });
 
 // Login an existing user

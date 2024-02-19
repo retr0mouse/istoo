@@ -5,9 +5,6 @@ export async function RegisterUser(user: User): Promise<number> {
     if (!user.email || !user.password || !user.username) {
         return;
     }
-    console.log(`
-        wohoo backend url: ${process.env.NEXT_PUBLIC_BACKEND_URL}/register
-    `);
     
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
@@ -21,9 +18,10 @@ export async function RegisterUser(user: User): Promise<number> {
         if (response.ok) {
             return 200;
         } else {
-            throw new Error("Failed to register user");
+            throw new Error("Failed to register user, kek");
         }
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }

@@ -1,6 +1,6 @@
 export interface RegistrationInput {
     name: string,
-    errorMessage: string,
+    notice: string,
     label: string,
     pattern: RegExp | null,
 }
