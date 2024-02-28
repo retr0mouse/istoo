@@ -1,5 +1,6 @@
 import { ApiResult } from "../../types/apiResult";
-import { addUserDB, getUserByEmailDB } from "../../db/queries.js";
+import { addUserDB, getUserByEmailDB, getUserByNameDB } from "../../db/queries.js";
+import { BackendError } from "../../types/backendError.js";
 
 export async function registerUser(credentials: { username: string, email: string, password: string }): Promise<ApiResult> {
     const { username, email, password } = credentials;
@@ -10,17 +11,24 @@ export async function registerUser(credentials: { username: string, email: strin
     const stringPassword = String(password);
 
     if (!stringUsername || !stringEmail || !stringPassword) {
-        const err = new Error("Credentials are invalid");
-        console.error(err.message);
-        return { success: false, error: err };
+        const backendError = new BackendError("Credentials are incomplete", 400);
+        return { success: false, error: backendError };
     }
 
-    const foundUser = await getUserByEmailDB(stringEmail);
+    const emailRequestResult = await getUserByEmailDB(stringEmail);  // if found, the user already exists
+    if (emailRequestResult.success) {
+        const backendError = new BackendError("User with the same email already exists", 400);
+        return { success: false, error: backendError };
+    } else if (emailRequestResult.error?.errorCode !== 404) {
+        return { success: false, error: emailRequestResult.error };
+    }
 
-    if (foundUser.data.length != 0) {
-        const err = new Error("User with the same email already exists");
-        console.error(err.message);
-        return { success: false, error: err };
+    const usernameRequestResult = await getUserByNameDB(stringUsername);  // if found, the user already exists
+    if (usernameRequestResult.success) {
+        const backendError = new BackendError("User with the same username already exists", 400);
+        return { success: false, error: backendError };
+    } else if (usernameRequestResult.error?.errorCode !== 404) {
+        return { success: false, error: usernameRequestResult.error };
     }
 
     // Pass the string values to addUser function

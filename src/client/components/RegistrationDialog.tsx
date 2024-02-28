@@ -1,8 +1,8 @@
-import { Transition, Dialog } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-import { registrationInputsTemplates } from "utils/registrationInputs";
-import { type User } from "types/user";
+import { Dialog, Transition } from "@headlessui/react";
 import { RegisterUser } from "api/registerUser";
+import { Fragment, useEffect, useState } from "react";
+import { type User } from "types/user";
+import { registrationInputsTemplates } from "utils/registrationInputs";
 import SingleLineError from "./SingleLineError";
 
 export default function RegisterDialog({ onActivated, onDisabled, onClicked }: { onActivated: boolean, onDisabled: () => void, onClicked: () => void }) {
@@ -59,7 +59,7 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
 
     async function sendRequestToCreateUser(): Promise<void> {
         if (!areAllInputsValid()) {
-            console.log("inputs are not correct");
+            console.error("Inputs are invalid or empty.");
             return;
         }
         const user = {
@@ -72,11 +72,10 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
             await RegisterUser(user);
             // TODO: redirect to the success screen to be able to log in
             setErrorMessage("");
-            // closeRegisterDialog();
-            
+            closeRegisterDialog();
         } catch (error) {
             console.error(error);
-            setErrorMessage(error instanceof Error && error.message ? "kek" + String(error.message) : "An error occurred: " + String(error));
+            setErrorMessage(error instanceof Error && error.message ? String(error.message) : String(error));
         }        
     }
 
@@ -84,10 +83,7 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
         if (onActivated) {
             openRegisterDialog();
         }
-    }, [onActivated])
-    useEffect(() => {
-        console.log(errorMessage);
-    }, [errorMessage]);
+    }, [onActivated]);
 
     return (
         <>

@@ -7,9 +7,9 @@ export interface User {
   username: string;
 }
 
-export interface AuthRequest extends Request {
-  user: User;
-}
+// export interface AuthRequest extends Request {
+//   user: User;
+// }
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
   const token = req.body.token || req.query.token || req.headers["x-access-token"];
