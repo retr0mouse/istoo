@@ -1,8 +1,9 @@
-import { Transition, Dialog } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-import { registrationInputsTemplates } from "utils/registrationInputs";
-import { type User } from "types/user";
+import { Dialog, Transition } from "@headlessui/react";
 import { RegisterUser } from "api/registerUser";
+import { Fragment, useEffect, useState } from "react";
+import { type User } from "types/user";
+import { registrationInputsTemplates } from "utils/registrationInputs";
+import SingleLineError from "./SingleLineError";
 
 export default function RegisterDialog({ onActivated, onDisabled, onClicked }: { onActivated: boolean, onDisabled: () => void, onClicked: () => void }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -11,17 +12,18 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const inputsTemplates = registrationInputsTemplates;
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
-    function getErrorMessage(inputName: string, inputValue: string): string {
+    function getInputsNoticeMessage(inputName: string, inputValue: string): string {
         const inputType = inputsTemplates.get(inputName);
-        let errorMessage: string;
+        let notice: string;
         if (!inputType || !inputValue) return;
         if (!inputType.pattern) {
-            errorMessage = inputValue.length > 0 ? "" : inputType.errorMessage;
+            notice = inputValue.length > 0 ? "" : inputType.notice;
         } else {
-            errorMessage = !inputType.pattern.test(inputValue) ? inputType.errorMessage : "";
+            notice = !inputType.pattern.test(inputValue) ? inputType.notice : "";
         }
-        return errorMessage;
+        return notice;
     }
 
     function areAllInputsValid(): boolean {
@@ -57,7 +59,7 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
 
     async function sendRequestToCreateUser(): Promise<void> {
         if (!areAllInputsValid()) {
-            console.log("inputs are not correct");
+            console.error("Inputs are invalid or empty.");
             return;
         }
         const user = {
@@ -69,18 +71,19 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
         try {
             await RegisterUser(user);
             // TODO: redirect to the success screen to be able to log in
-            
+            setErrorMessage("");
+            closeRegisterDialog();
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            setErrorMessage(error instanceof Error && error.message ? String(error.message) : String(error));
         }        
-        closeRegisterDialog();
     }
 
     useEffect(() => {
         if (onActivated) {
             openRegisterDialog();
         }
-    }, [onActivated])
+    }, [onActivated]);
 
     return (
         <>
@@ -117,15 +120,16 @@ export default function RegisterDialog({ onActivated, onDisabled, onClicked }: {
                                         Sign up to Istoo
                                     </Dialog.Title>
                                     <div className="mt-2 flex flex-col w-full gap-2">
-                                        <label htmlFor="email" defaultValue={""}>{getErrorMessage("email", email)}</label>
+                                        <label className="text-red-300" htmlFor="email" defaultValue={""}>{getInputsNoticeMessage("email", email)}</label>
                                         <input name={"email"} type="text" placeholder='Email' value={email} className={`p-2 font-sans w-full border`} onChange={(event) => setEmail(event.target.value)} />
-                                        <label htmlFor="username" defaultValue={""}>{getErrorMessage("username", username)}</label>
+                                        <label className="text-red-300" htmlFor="username" defaultValue={""}>{getInputsNoticeMessage("username", username)}</label>
                                         <input name={"username"} type="text" placeholder='Username' value={username} className={`p-2 font-sans w-full border`} onChange={(event) => setUsername(event.target.value)} />
-                                        <label htmlFor="password">{getErrorMessage("password", password)}</label>
+                                        <label className="text-red-300" htmlFor="password">{getInputsNoticeMessage("password", password)}</label>
                                         <input name={"password"} type="password" placeholder='Password' value={password} className={`p-2 font-sans w-full border`} onChange={(event) => setPassword(event.target.value)} />
-                                        <label htmlFor="confirmPassword" defaultValue={""}>{comparePasswords() ? "" : "Passwords do not match!"}</label>
+                                        <label className="text-red-300" htmlFor="confirmPassword" defaultValue={""}>{comparePasswords() ? "" : "Passwords do not match!"}</label>
                                         <input name={"confirmPassword"} type="password" placeholder='Repeat Password' value={confirmPassword} className={`p-2 font-sans w-full border`} onChange={(event) => setConfirmPassword(event.target.value)} />
                                     </div>
+                                    {errorMessage && <SingleLineError message={errorMessage} />}
                                     <button
                                         type="button"
                                         className="mt-2 w-full rounded-sm bg-button-green px-4 py-2 text-2xl font-mono font-medium text-slate-100"

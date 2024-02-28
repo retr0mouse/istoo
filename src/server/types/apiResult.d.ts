@@ -1,5 +1,7 @@
+import { BackendError } from './backendError';
+
 export interface ApiResult {
     success: boolean;
-    error?: Error;
+    error?: BackendError;
     data?: any;
 }

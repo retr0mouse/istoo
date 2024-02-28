@@ -2,36 +2,52 @@ import { getCurrentDate } from "../utils/date.js";
 import { ApiResult } from "../types/apiResult.js";
 import { query } from "./index.js";
 import bcrypt from "bcrypt";
+import { BackendError } from "../types/backendError.js";
 const saltRounds = 10;
 
 export async function getAllUsersDB(): Promise<ApiResult> {
     try {
-        return ({ success: true, data: (await query('SELECT * FROM accounts;')).rows })
+        const queryResult =  await query('SELECT * FROM accounts;');
+        if (queryResult.rows.length === 0) {
+            const backendError = new BackendError("No users are present in the database", 404);
+            return { success: false,  error: backendError };
+        }
+        return ({ success: true, data: queryResult.rows })
+        
     } catch (err: any) {
-        console.error('Error deleting user:', err);
-        return { success: false, error: err };
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
 };
 
 export async function getUserByNameDB(username: string): Promise<ApiResult> {
     try {
         const queryText = `SELECT * FROM accounts WHERE username = $1;`;
-        return ({ success: true, data: (await query(queryText, [username])).rows[0] })
+        const queryResult =  await query(queryText, [username]);
+        if (queryResult.rows.length === 0) {
+            const backendError = new BackendError("User does not exist", 404);
+            return { success: false,  error: backendError };
+        }
+        return ({ success: true, data: queryResult.rows[0] })
     } catch (err: any) {
-        console.error('Error deleting user:', err);
-        return { success: false, error: err };
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
 };
 
 export async function getUserByEmailDB(email: string): Promise<ApiResult> {
     try {
         const queryText = `SELECT * FROM accounts WHERE email = $1;`;
-        return ({ success: true, data: (await query(queryText, [email])).rows })
+        const queryResult =  await query(queryText, [email]);
+        if (queryResult.rows.length === 0) {
+            const backendError = new BackendError("User does not exist", 404);
+            return { success: false,  error: backendError };
+        }
+        return ({ success: true, data: queryResult.rows[0] })
     } catch (err: any) {
-        console.error('Error deleting user:', err);
-        return { success: false, error: err };
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
-
 };
 
 export async function addUserDB(request: { username: string, password: string, email: string }): Promise<ApiResult> {
@@ -50,11 +66,10 @@ export async function addUserDB(request: { username: string, password: string, e
         const queryValues = [username, hashedPassword, email, createdOn, null];
 
         await query(queryText, queryValues);
-
         return { success: true };
     } catch (err: any) {
-        console.error('Error adding user:', err);
-        return { success: false, error: err };
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
 }
 
@@ -64,8 +79,8 @@ export async function deleteUserByIdDB(userId: number): Promise<ApiResult> {
         await query(queryText, [userId]);
         return { success: true };
     } catch (err: any) {
-        console.error('Error deleting user:', err);
-        return { success: false, error: err };
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
 }
 
@@ -75,8 +90,8 @@ export async function deleteUserByEmailDB(email: string): Promise<ApiResult> {
         await query(queryText, [email]);
         return { success: true };
     } catch (err: any) {
-        console.error('Error deleting user:', err);
-        return { success: false, error: err };
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
 }
 
@@ -86,7 +101,7 @@ export async function getHashedPasswordDB(username: string): Promise<ApiResult> 
         await (query(queryText, [username]));
         return { success: true };
     } catch (err: any) {
-        console.error('Error getting hasned password: ', err);
-        return { success: false, error: err }
+        const backendError = BackendError.fromError(err, 500);
+        return { success: false, error: backendError };
     }
 }

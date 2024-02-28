@@ -1,6 +1,6 @@
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon, MapPinIcon } from '@heroicons/react/20/solid';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 
 export type City = {
   id: number,

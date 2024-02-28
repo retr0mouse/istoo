@@ -22,82 +22,52 @@ app.use(
 app.get('/users/:username', async (request, response) => {
   const parsedUsername = String(request.params.username);
   if (!parsedUsername || parsedUsername.length == 0) {
-    const err = new Error("The username is invalid");
+    const err = new Error("The username is invalid or empty");
     console.error(err);
-    response.status(400);
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
     return;
   }
-  const result = await getUserByNameDB(parsedUsername);
-  if (result.success) { // TODO: this will be true even if user was not found
-    if (!result.data || result.data.length == 0) {
-      response.status(404);
-      response.json({ error: "User not found" });
-      return;
-    }
-    response.status(404);
-    response.json({ data: result.data });
+  const requestResult = await getUserByNameDB(parsedUsername);
+  if (requestResult.success) {
+    response.status(200).json({ data: requestResult.data });
     return;
   }
-  response.status(500);
-  response.json({ error: result.error?.message });
+  console.error(requestResult.error);
+  response.status(requestResult.error?.errorCode || 500).json({ error: requestResult.error?.message });
 });
 
 // GET all users
 app.get('/users', async (request, response) => {
-  const result = await getAllUsersDB();
-  if (result.success) {
-    response.status(200);
-    response.json({ data: result.data });
+  const resultRequest = await getAllUsersDB();
+  if (resultRequest.success) {
+    response.status(200).json({ data: resultRequest.data });
     return;
   }
-  response.status(500);
-  response.json({ error: result.error?.message });
-});
-
-// POST new user
-app.post('/users', async (request, response) => {
-  const parsedPassword = String(request.body.password);
-  if (!parsedPassword || parsedPassword.length == 0) {
-    const err = new Error("The password is invalid");
-    console.error(err);
-    response.status(400);
-    response.json({ error: err.message });
-    return;
-  }
-  request.body.password = parsedPassword;
-  const result = await addUserDB(request.body);
-  if (result.success) {
-    response.status(200);
-    response.json();
-    return;
-  }
-  response.status(500);
-  response.json({ error: result.error?.message });
+  console.error(resultRequest.error);
+  response.status(resultRequest.error?.errorCode || 500).json({ error: resultRequest.error?.message });
 });
 
 // Register a new account 
 app.post('/register', async (request, response) => {
-  const result = await registerUser(request.body);
-  if (result.success) {
-    response.status(200);
-    response.json();
+  const resultRequest = await registerUser(request.body);
+  if (resultRequest.success) {
+    response.status(200).json();
     return;
+  } else if (!resultRequest.success) {
+    console.error(resultRequest.error);
+    response.status(resultRequest.error?.errorCode || 500).json({ error: resultRequest.error?.message });
   }
-  response.status(500);
-  response.json({ error: result.error?.message });
 });
 
 // Login an existing user
 app.post('/login', async (request, response) => {
-  const result = await loginUser(request.body.login, request.body.password);
-  if (result.success) {
-    response.status(200);
-    response.json({ token: result.data });
+  const resultRequest = await loginUser(request.body.login, request.body.password);
+  if (resultRequest.success) {
+    response.status(200).json({ token: resultRequest.data });
     return;
   }
-  response.status(500);
-  response.json({ error: result.error?.message });
+  console.error(resultRequest.error);
+  response.status(resultRequest.error?.errorCode || 500).json({ error: resultRequest.error?.message });
 });
 
 interface User {
@@ -112,6 +82,7 @@ app.post('/auth', authenticate, (req, res, next) => {
   if (userInfo) {
     res.status(200).json({ user: userInfo }); // Return user info as JSON
   } else {
+    console.error("Unauthorized");
     res.status(401).json({ error: "Unauthorized" });
   }
 });
@@ -121,19 +92,17 @@ app.delete('/users/:userEmail', async (request, response) => {
   const parsedUserEmail = String(request.params.userEmail);
   if (!parsedUserEmail) {
     const err = new Error("The email is invalid");
-    // console.error(err);
-    response.status(400);
-    response.json({ error: err.message });
+    console.error(err);
+    response.status(400).json({ error: err.message });
     return;
   }
-  const result = await deleteUser(parsedUserEmail);
-  if (result.success) {
-    response.status(200);
-    response.json();
+  const requestResult = await deleteUser(parsedUserEmail);
+  if (requestResult.success) {
+    response.status(200).json();
     return;
   }
-  response.status(500);
-  response.json({ error: result.error?.message });
+  console.error(requestResult.error);
+  response.status(requestResult.error?.errorCode || 500).json({ error: requestResult.error?.message });
 });
 
 app.listen(port, () => {

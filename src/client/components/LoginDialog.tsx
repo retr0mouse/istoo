@@ -15,9 +15,9 @@ export default function LoginDialog({ onActivated, onDisabled, onClicked }: {onA
         const inputType = inputs.get(type);
         if (!inputType || !value) return;
         if (!inputType.pattern) {
-            return value.length > 0 ? "" : inputType.errorMessage;
+            return value.length > 0 ? "" : inputType.notice;
         }
-        return !inputType.pattern.test(value) ? inputType.errorMessage : "";
+        return !inputType.pattern.test(value) ? inputType.notice : "";
     }
 
     function closeDialog() {
