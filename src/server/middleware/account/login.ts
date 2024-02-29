@@ -7,7 +7,7 @@ import { BackendError } from "../../types/backendError.js";
 
 export async function loginUser(username: string, inputPassword: string): Promise<ApiResult> {
     const requestResult = await getUserByNameDB(username);
-    if (requestResult.success === false) {
+    if (!requestResult.success) {
         return requestResult;
     }
     if (!requestResult.data) {
@@ -18,11 +18,16 @@ export async function loginUser(username: string, inputPassword: string): Promis
     const result = await bcrypt.compare(String(inputPassword), String(hashedPassword));
     
     if (!result) {
-        return ({ success: false, error: { name: "Authentication error", message: "Credentials are wrong"} });
+        const backendError = new BackendError("Credentials are wrong", 401);
+        return ({ success: false, error: backendError });
+    }
+    if (!process.env.TOKEN_KEY) {
+        const backendError = new BackendError("Server error: no token key", 500);
+        return ({ success: false, error: backendError });
     }
     const token = jwt.sign(
-        {userId, hashedPassword},
-        process.env.TOKEN_KEY || "kek",
+        {userId},
+        process.env.TOKEN_KEY,
         {
             expiresIn: "2h"
         }

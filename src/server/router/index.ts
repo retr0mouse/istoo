@@ -70,14 +70,9 @@ app.post('/login', async (request, response) => {
   response.status(resultRequest.error?.errorCode || 500).json({ error: resultRequest.error?.message });
 });
 
-interface User {
-  id: string;
-  username: string;
-}
-
 app.post('/auth', authenticate, (req, res, next) => {
   // Access user info from req.user
-  const userInfo = (req as any).user as User;
+  const userInfo = (req as any).user;
 
   if (userInfo) {
     res.status(200).json({ user: userInfo }); // Return user info as JSON
